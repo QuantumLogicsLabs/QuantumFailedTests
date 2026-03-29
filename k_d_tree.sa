@@ -1,0 +1,144 @@
+// K-D Tree Implementation in C++
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+struct Point {
+    vector<int> coords;
+    
+    Point(vector<int> c) : coords(c) {}
+    
+    int& operator[](int index) {
+        return coords[index];
+    }
+    
+    const int& operator[](int index) const {
+        return coords[index];
+    }
+};
+
+struct KDNode {
+    Point point;
+    KDNode* left;
+    KDNode* right;
+    
+    KDNode(Point p) : point(p), left(nullptr), right(nullptr) {}
+    
+    ~KDNode() {
+        delete left;
+        delete right;
+    }
+};
+
+class KDTree {
+private:
+    KDNode* root;
+    int k;
+
+    KDNode* buildTree(vector<Point>& points, int depth) {
+        if (points.empty()) {
+            return nullptr;
+        }
+        
+        int axis = depth % k;
+        
+        sort(points.begin(), points.end(), [axis](const Point& a, const Point& b) {
+            return a[axis] < b[axis];
+        });
+        
+        int median = points.size() / 2;
+        KDNode* node = new KDNode(points[median]);
+        
+        vector<Point> leftPoints(points.begin(), points.begin() + median);
+        vector<Point> rightPoints(points.begin() + median + 1, points.end());
+        
+        node->left = buildTree(leftPoints, depth + 1);
+        node->right = buildTree(rightPoints, depth + 1);
+        
+        return node;
+    }
+
+    bool searchHelper(KDNode* node, Point& target, int depth) {
+        if (!node) {
+            return false;
+        }
+        
+        bool match = true;
+        for (int i = 0; i < k; i++) {
+            if (node->point[i] != target[i]) {
+                match = false;
+                break;
+            }
+        }
+        
+        if (match) {
+            return true;
+        }
+        
+        int axis = depth % k;
+        KDNode* nextBranch = (target[axis] < node->point[axis]) ? node->left : node->right;
+        KDNode* otherBranch = (target[axis] < node->point[axis]) ? node->right : node->left;
+        
+        return searchHelper(nextBranch, target, depth + 1) || searchHelper(otherBranch, target, depth + 1);
+    }
+
+    void inorder(KDNode* node) {
+        if (node) {
+            inorder(node->left);
+            cout << "(";
+            for (int i = 0; i < k; i++) {
+                cout << node->point[i];
+                if (i < k - 1) cout << ", ";
+            }
+            cout << ") ";
+            inorder(node->right);
+        }
+    }
+
+public:
+    KDTree(int dimensions) : root(nullptr), k(dimensions) {}
+
+    ~KDTree() {
+        delete root;
+    }
+
+    void build(vector<Point>& points) {
+        delete root;
+        root = buildTree(points, 0);
+    }
+
+    bool search(Point& target) {
+        return searchHelper(root, target, 0);
+    }
+
+    void display() {
+        cout << "K-D Tree (k=" << k << "): ";
+        inorder(root);
+        cout << endl;
+    }
+};
+
+int main() {
+    KDTree kdt(2);
+    
+    vector<Point> points = {
+        Point({2, 3}),
+        Point({5, 4}),
+        Point({9, 6}),
+        Point({4, 7}),
+        Point({8, 1}),
+        Point({7, 2})
+    };
+    
+    kdt.build(points);
+    kdt.display();
+    
+    Point target1({5, 4});
+    Point target2({10, 10});
+    
+    cout << "Search (5,4): " << (kdt.search(target1) ? "Found" : "Not Found") << endl;
+    cout << "Search (10,10): " << (kdt.search(target2) ? "Found" : "Not Found") << endl;
+    
+    return 0;
+}

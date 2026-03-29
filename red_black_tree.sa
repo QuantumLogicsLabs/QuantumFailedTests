@@ -1,0 +1,172 @@
+// Red-Black Tree Implementation in C++
+#include <iostream>
+using namespace std;
+
+enum Color { RED, BLACK };
+
+struct RBNode {
+    int data;
+    bool color;
+    RBNode* left;
+    RBNode* right;
+    RBNode* parent;
+    
+    RBNode(int val) : data(val), color(RED), left(nullptr), right(nullptr), parent(nullptr) {}
+};
+
+class RedBlackTree {
+private:
+    RBNode* root;
+    RBNode* NIL;
+
+    void leftRotate(RBNode* x) {
+        RBNode* y = x->right;
+        x->right = y->left;
+        if (y->left != NIL) {
+            y->left->parent = x;
+        }
+        y->parent = x->parent;
+        if (x->parent == nullptr) {
+            root = y;
+        } else if (x == x->parent->left) {
+            x->parent->left = y;
+        } else {
+            x->parent->right = y;
+        }
+        y->left = x;
+        x->parent = y;
+    }
+
+    void rightRotate(RBNode* y) {
+        RBNode* x = y->left;
+        y->left = x->right;
+        if (x->right != NIL) {
+            x->right->parent = y;
+        }
+        x->parent = y->parent;
+        if (y->parent == nullptr) {
+            root = x;
+        } else if (y == y->parent->right) {
+            y->parent->right = x;
+        } else {
+            y->parent->left = x;
+        }
+        x->right = y;
+        y->parent = x;
+    }
+
+    void insertFixup(RBNode* z) {
+        while (z->parent != nullptr && z->parent->color == RED) {
+            if (z->parent == z->parent->parent->left) {
+                RBNode* y = z->parent->parent->right;
+                if (y != nullptr && y->color == RED) {
+                    z->parent->color = BLACK;
+                    y->color = BLACK;
+                    z->parent->parent->color = RED;
+                    z = z->parent->parent;
+                } else {
+                    if (z == z->parent->right) {
+                        z = z->parent;
+                        leftRotate(z);
+                    }
+                    z->parent->color = BLACK;
+                    z->parent->parent->color = RED;
+                    rightRotate(z->parent->parent);
+                }
+            } else {
+                RBNode* y = z->parent->parent->left;
+                if (y != nullptr && y->color == RED) {
+                    z->parent->color = BLACK;
+                    y->color = BLACK;
+                    z->parent->parent->color = RED;
+                    z = z->parent->parent;
+                } else {
+                    if (z == z->parent->left) {
+                        z = z->parent;
+                        rightRotate(z);
+                    }
+                    z->parent->color = BLACK;
+                    z->parent->parent->color = RED;
+                    leftRotate(z->parent->parent);
+                }
+            }
+        }
+        root->color = BLACK;
+    }
+
+    void inorder(RBNode* node) {
+        if (node != nullptr && node != NIL) {
+            inorder(node->left);
+            cout << node->data << "(" << (node->color == RED ? "R" : "B") << ") ";
+            inorder(node->right);
+        }
+    }
+
+    void destroyTree(RBNode* node) {
+        if (node != nullptr && node != NIL) {
+            destroyTree(node->left);
+            destroyTree(node->right);
+            delete node;
+        }
+    }
+
+public:
+    RedBlackTree() {
+        NIL = new RBNode(0);
+        NIL->color = BLACK;
+        root = nullptr;
+    }
+
+    ~RedBlackTree() {
+        destroyTree(root);
+        delete NIL;
+    }
+
+    void insert(int value) {
+        RBNode* z = new RBNode(value);
+        RBNode* y = nullptr;
+        RBNode* x = root;
+
+        while (x != nullptr && x != NIL) {
+            y = x;
+            if (z->data < x->data) {
+                x = x->left;
+            } else {
+                x = x->right;
+            }
+        }
+
+        z->parent = y;
+        if (y == nullptr) {
+            root = z;
+        } else if (z->data < y->data) {
+            y->left = z;
+        } else {
+            y->right = z;
+        }
+
+        z->left = NIL;
+        z->right = NIL;
+        insertFixup(z);
+    }
+
+    void display() {
+        cout << "Red-Black Tree: ";
+        inorder(root);
+        cout << endl;
+    }
+};
+
+int main() {
+    RedBlackTree rbt;
+    rbt.insert(10);
+    rbt.insert(20);
+    rbt.insert(30);
+    rbt.insert(15);
+    rbt.insert(25);
+    rbt.insert(5);
+    
+    rbt.display();
+    
+    return 0;
+}
