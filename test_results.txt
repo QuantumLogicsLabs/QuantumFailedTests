@@ -1,0 +1,2888 @@
+Quantum Language — Test Results (in progress)
+Generated : 2026-07-13 00:09:02
+Directory : C:\QuantumLogicsLabs\QuantumLanguage\compiler\tests
+Total     : 79   (running...)
+========================================================================
+
+[PASS] tests\Tower of Hanoi Algorithm.sa
+
+[PASS] tests\User Configuration Manager.sa
+
+[PASS] tests\adjacency_matrix.sa
+
+[FAIL] tests\advanced.sa
+------------------------------------------------------------------------
+Error  : TypeError: Cannot call value of type nil
+Line   : 27
+
+--- Program Output ---
+  === Linked List via Dicts ===
+  1 -> 2 -> 3 -> nil
+  
+  === Higher Order Functions ===
+--- End Output ---
+
+--- Source Code (tests\advanced.sa) ---
+       1 | # advanced.sa — Advanced Quantum Features
+       2 | # Run: quantum advanced.sa
+       3 | 
+       4 | # ── Recursive Data Structures ─────────────────────────────────────────────
+       5 | print("=== Linked List via Dicts ===")
+       6 | 
+       7 | fn make_node(val, next) {
+       8 |     return {"val": val, "next": next}
+       9 | }
+      10 | 
+      11 | fn list_to_str(node) {
+      12 |     if node == nil { return "nil" }
+      13 |     return str(node["val"]) + " -> " + list_to_str(node["next"])
+      14 | }
+      15 | 
+      16 | let lst = make_node(1, make_node(2, make_node(3, nil)))
+      17 | print(list_to_str(lst))
+      18 | 
+      19 | # ── Higher Order Functions ────────────────────────────────────────────────
+      20 | print("\n=== Higher Order Functions ===")
+      21 | 
+      22 | fn compose(f, g) {
+      23 |     return fn(x) { return f(g(x)) }
+      24 | }
+      25 | 
+      26 | 
+>>>   27 | print("double(inc(5)) =", doubleAfterInc(5))
+      28 | 
+      29 | fn reduce(arr, fn_, init) {
+      30 |     let acc = init
+      31 |     for item in arr {
+      32 |         acc = fn_(acc, item)
+      33 |     }
+      34 |     return acc
+      35 | }
+      36 | 
+      37 | let nums = [1, 2, 3, 4, 5]
+      38 | let sum  = reduce(nums, fn(a, b) { return a + b }, 0)
+      39 | let prod = reduce(nums, fn(a, b) { return a * b }, 1)
+      40 | print("Sum:", sum, "| Product:", prod)
+      41 | 
+      42 | # ── Fibonacci with memoization ────────────────────────────────────────────
+      43 | print("\n=== Memoized Fibonacci ===")
+      44 | let memo = {}
+      45 | 
+      46 | fn fib(n) {
+      47 |     let key = str(n)
+      48 |     if memo.has(key) { return memo.get(key) }
+      49 |     if n <= 1 { return n }
+      50 |     let result = fib(n - 1) + fib(n - 2)
+      51 |     memo.set(key, result)
+      52 |     return result
+      53 | }
+      54 | 
+      55 | for i in range(0, 15) {
+      56 |     print("fib(" + str(i) + ") =", fib(i))
+      57 | }
+      58 | 
+      59 | # ── String interpolation helper ───────────────────────────────────────────
+      60 | print("\n=== String Operations ===")
+      61 | 
+      62 | fn repeat_str(s, n) {
+      63 |     let res = ""
+      64 |     for _ in range(n) { res += s }
+      65 |     return res
+      66 | }
+      67 | 
+      68 | print(repeat_str("=-", 20))
+      69 | 
+      70 | fn center(s, width) {
+      71 |     let pad = width - len(s)
+      72 |     let left = pad / 2
+      73 |     let right = pad - left
+      74 |     return repeat_str(" ", floor(left)) + s + repeat_str(" ", floor(right))
+      75 | }
+      76 | 
+      77 | let banner_width = 40
+      78 | print(repeat_str("=", banner_width))
+      79 | print(center("QUANTUM LANGUAGE", banner_width))
+      80 | print(center("v1.0.0", banner_width))
+      81 | print(repeat_str("=", banner_width))
+      82 | 
+      83 | # ── Sorting algorithms ────────────────────────────────────────────────────
+      84 | print("\n=== Bubble Sort ===")
+      85 | 
+      86 | fn bubble_sort(arr) {
+      87 |     let n = len(arr)
+      88 |     let i = 0
+      89 |     while i < n {
+      90 |         let j = 0
+      91 |         while j < n - i - 1 {
+      92 |             if arr[j] > arr[j+1] {
+      93 |                 let tmp = arr[j]
+      94 |                 arr[j] = arr[j+1]
+      95 |                 arr[j+1] = tmp
+      96 |             }
+      97 |             j += 1
+      98 |         }
+      99 |         i += 1
+     100 |     }
+     101 |     return arr
+     102 | }
+     103 | 
+     104 | let unsorted = [64, 34, 25, 12, 22, 11, 90]
+     105 | print("Before:", unsorted)
+     106 | bubble_sort(unsorted)
+     107 | print("After: ", unsorted)
+     108 | 
+     109 | # ── Stack implementation ───────────────────────────────────────────────────
+     110 | print("\n=== Stack ===")
+     111 | 
+     112 | fn make_stack() {
+     113 |     return {"items": [], "size": 0}
+     114 | }
+     115 | 
+     116 | fn stack_push(s, val) {
+     117 |     s["items"].push(val)
+     118 |     s["size"] += 1
+     119 | }
+     120 | 
+     121 | fn stack_pop(s) {
+     122 |     if s["size"] == 0 { return nil }
+     123 |     s["size"] -= 1
+     124 |     return s["items"].pop()
+     125 | }
+     126 | 
+     127 | fn stack_peek(s) {
+     128 |     if s["size"] == 0 { return nil }
+     129 |     return s["items"][s["size"] - 1]
+     130 | }
+     131 | 
+     132 | let stack = make_stack()
+     133 | stack_push(stack, 10)
+     134 | stack_push(stack, 20)
+     135 | stack_push(stack, 30)
+     136 | print("Stack:", stack["items"])
+     137 | print("Peek:", stack_peek(stack))
+     138 | print("Pop:", stack_pop(stack))
+     139 | print("Pop:", stack_pop(stack))
+     140 | print("Stack:", stack["items"])
+     141 | 
+     142 | # ── Simple State Machine ──────────────────────────────────────────────────
+     143 | print("\n=== Traffic Light State Machine ===")
+     144 | 
+     145 | let STATES = ["RED", "GREEN", "YELLOW"]
+     146 | let state_idx = 0
+     147 | 
+     148 | fn next_state() {
+     149 |     state_idx = (state_idx + 1) % len(STATES)
+     150 |     return STATES[state_idx]
+     151 | }
+     152 | 
+     153 | fn current_state() {
+     154 |     return STATES[state_idx]
+     155 | }
+     156 | 
+     157 | print("Current:", current_state())
+     158 | for _ in range(6) {
+     159 |     print("→", next_state())
+     160 | }
+--- End Source ---
+
+========================================================================
+
+[PASS] tests\articulation_points.sa
+
+[PASS] tests\avl_tree.sa
+
+[PASS] tests\b_tree.sa
+
+[PASS] tests\bfs.sa
+
+[PASS] tests\binary_search_tree.sa
+
+[PASS] tests\binary_tree.sa
+
+[PASS] tests\block_array.sa
+
+[PASS] tests\bloom_filter.sa
+
+[PASS] tests\cartesian_tree.sa
+
+[PASS] tests\chunked_array.sa
+
+[PASS] tests\concurrent_hash.sa
+
+[PASS] tests\consistent_hashing.sa
+
+[PASS] tests\count_min_sketch.sa
+
+[PASS] tests\cuckoo_hashing.sa
+
+[FAIL] tests\date helper.sa
+------------------------------------------------------------------------
+Error  : TypeError: Dict has no method 'toLocaleDateString'
+
+--- Source Code (tests\date helper.sa) ---
+       1 | // Simple Date Helper
+       2 | function formatDate(date, format = 'short') {
+       3 |   const options = {
+       4 |     short: { year: 'numeric', month: 'short', day: 'numeric' },
+       5 |     long: { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' },
+       6 |     time: { hour: '2-digit', minute: '2-digit' },
+       7 |     datetime: { 
+       8 |       year: 'numeric', 
+       9 |       month: 'short', 
+      10 |       day: 'numeric',
+      11 |       hour: '2-digit', 
+      12 |       minute: '2-digit' 
+      13 |     }
+      14 |   };
+      15 |   
+      16 |   return new Date(date).toLocaleDateString('en-US', options[format]);
+      17 | }
+      18 | 
+      19 | function getTimeAgo(date) {
+      20 |   const seconds = Math.floor((Date.now() - new Date(date)) / 1000);
+      21 |   
+      22 |   if (seconds < 60) return 'just now';
+      23 |   if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes ago`;
+      24 |   if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`;
+      25 |   if (seconds < 2592000) return `${Math.floor(seconds / 86400)} days ago`;
+      26 |   
+      27 |   return formatDate(date, 'short');
+      28 | }
+      29 | 
+      30 | function addDays(date, days) {
+      31 |   const result = new Date(date);
+      32 |   result.setDate(result.getDate() + days);
+      33 |   return result;
+      34 | }
+      35 | 
+      36 | function isWeekend(date) {
+      37 |   const day = new Date(date).getDay();
+      38 |   return day === 0 || day === 6;
+      39 | }
+      40 | 
+      41 | // Usage examples
+      42 | const today = new Date();
+      43 | console.log('Today (short):', formatDate(today));
+      44 | console.log('Today (long):', formatDate(today, 'long'));
+      45 | console.log('Today (time):', formatDate(today, 'time'));
+      46 | console.log('Today (datetime):', formatDate(today, 'datetime'));
+      47 | 
+      48 | const yesterday = addDays(today, -1);
+      49 | console.log('Yesterday:', getTimeAgo(yesterday));
+      50 | 
+      51 | console.log('Is today weekend?', isWeekend(today));
+      52 | console.log('Is Sunday weekend?', isWeekend('2023-12-10'));
+      53 | 
+      54 | console.log('Date helper ready!');
+--- End Source ---
+
+========================================================================
+
+[PASS] tests\dfs.sa
+
+[PASS] tests\double_hashing.sa
+
+[PASS] tests\doubly_linked_list.sa
+
+[PASS] tests\dungeon.sa
+
+[PASS] tests\dynamic_array.sa
+
+[PASS] tests\eulerian_path.sa
+
+[FAIL] tests\file operations.sa
+------------------------------------------------------------------------
+Error  : RuntimeError: Execution step limit exceeded (possible infinite loop)
+
+--- Program Output ---
+  === File Operations Examples ===
+  
+  --- Basic File Operations ---
+  Writing to file: test_output.txt
+  File written successfully
+  
+  Reading from file: test_output.txt
+  File content:
+  Hello, Quantum Language!
+  This is a test file.
+  File operations in Quantum.
+  
+  --- Appending to File ---
+  Content appended successfully
+  
+  Updated file content:
+  
+  This line was appended.
+  
+  --- File Information ---
+  File exists: true
+  File size: 24 characters
+  
+  --- File Copying ---
+  File copied successfully to: test_copy.txt
+  Copied file content (first 50 chars): 
+  This line was appended....
+  
+  === CSV File Operations ===
+  CSV file written successfully: students.csv
+--- End Output ---
+
+--- Source Code (tests\file operations.sa) ---
+       1 | # file_operations.sa - File Operations Examples
+       2 | # C-style file operations implementation in Quantum Language
+       3 | 
+       4 | print("=== File Operations Examples ===");
+       5 | 
+       6 | # Basic file writing and reading
+       7 | print("\n--- Basic File Operations ---");
+       8 | 
+       9 | let filename = "test_output.txt";
+      10 | let content = "Hello, Quantum Language!\nThis is a test file.\nFile operations in Quantum.";
+      11 | 
+      12 | # Write to file
+      13 | print("Writing to file:", filename);
+      14 | if (write_file(filename, content)) {
+      15 |     print("File written successfully");
+      16 | } else {
+      17 |     print("Failed to write file");
+      18 | }
+      19 | 
+      20 | # Read from file
+      21 | print("\nReading from file:", filename);
+      22 | let read_content = read_file(filename);
+      23 | if (read_content != null) {
+      24 |     print("File content:");
+      25 |     print(read_content);
+      26 | } else {
+      27 |     print("Failed to read file");
+      28 | }
+      29 | 
+      30 | # Append to file
+      31 | print("\n--- Appending to File ---");
+      32 | let append_content = "\nThis line was appended.";
+      33 | if (write_file(filename, append_content, true)) {  # Append mode
+      34 |     print("Content appended successfully");
+      35 | } else {
+      36 |     print("Failed to append content");
+      37 | }
+      38 | 
+      39 | # Read updated file
+      40 | print("\nUpdated file content:");
+      41 | let updated_content = read_file(filename);
+      42 | print(updated_content);
+      43 | 
+      44 | # File information operations
+      45 | print("\n--- File Information ---");
+      46 | 
+      47 | function file_exists(filename) {
+      48 |     # Try to read file to check if it exists
+      49 |     let content = read_file(filename);
+      50 |     return content != null || filename == "test_output.txt";  # Simplified check
+      51 | }
+      52 | 
+      53 | function get_file_size(filename) {
+      54 |     let content = read_file(filename);
+      55 |     try {
+      56 |         if (content != null && content != nil && content != undefined) {
+      57 |             return len(content);
+      58 |         }
+      59 |     } catch (e) {
+      60 |         # Handle any errors during length calculation
+      61 |         return 0;
+      62 |     }
+      63 |     return 0;
+      64 | }
+      65 | 
+      66 | print("File exists:", file_exists(filename));
+      67 | print("File size:", get_file_size(filename), "characters");
+      68 | 
+      69 | # File copying
+      70 | print("\n--- File Copying ---");
+      71 | 
+      72 | function copy_file(source, destination) {
+      73 |     let content = read_file(source);
+      74 |     if (content != null) {
+      75 |         return write_file(destination, content);
+      76 |     }
+      77 |     return false;
+      78 | }
+      79 | 
+      80 | let copy_filename = "test_copy.txt";
+      81 | if (copy_file(filename, copy_filename)) {
+      82 |     print("File copied successfully to:", copy_filename);
+      83 |     
+      84 |     # Verify copy
+      85 |     let copy_content = read_file(copy_filename);
+      86 |     if (copy_content != null && copy_content != nil) {
+      87 |         print("Copied file content (first 50 chars):", copy_content.slice(0, 50) + "...");
+      88 |     } else {
+      89 |         print("Failed to read copied file");
+      90 |     }
+      91 | } else {
+      92 |     print("Failed to copy file");
+      93 | }
+      94 | 
+      95 | # CSV file operations
+      96 | print("\n=== CSV File Operations ===");
+      97 | 
+      98 | # Create sample data
+      99 | let students = [
+     100 |     {"name": "Alice", "age": 20, "grade": "A"},
+     101 |     {"name": "Bob", "age": 22, "grade": "B"},
+     102 |     {"name": "Charlie", "age": 21, "grade": "A"},
+     103 |     {"name": "Diana", "age": 19, "grade": "C"}
+     104 | ];
+     105 | 
+     106 | # Write CSV file
+     107 | function write_csv(filename, data, headers) {
+     108 |     let csv_content = "";
+     109 |     
+     110 |     # Write headers
+     111 |     if (headers != null && len(headers) > 0) {
+     112 |         csv_content += headers.join(",") + "\n";
+     113 |     }
+     114 |     
+     115 |     # Write data rows
+     116 |     for (let i = 0; i < len(data); i++) {
+     117 |         let row = data[i];
+     118 |         let row_values = [];
+     119 |         
+     120 |         for (let j = 0; j < len(headers); j++) {
+     121 |             let key = headers[j];
+     122 |             row_values.push(str(row[key]));
+     123 |         }
+     124 |         
+     125 |         csv_content += row_values.join(",") + "\n";
+     126 |     }
+     127 |     
+     128 |     return write_file(filename, csv_content);
+     129 | }
+     130 | 
+     131 | let csv_filename = "students.csv";
+     132 | let csv_headers = ["name", "age", "grade"];
+     133 | 
+     134 | if (write_csv(csv_filename, students, csv_headers)) {
+     135 |     print("CSV file written successfully:", csv_filename);
+     136 | } else {
+     137 |     print("Failed to write CSV file");
+     138 | }
+     139 | 
+     140 | # Read CSV file
+     141 | function read_csv(filename) {
+     142 |     let content = read_file(filename);
+     143 |     if (content == null) {
+     144 |         return null;
+     145 |     }
+     146 |     
+     147 |     let lines = content.split("\n");
+     148 |     let result = [];
+     149 |     
+     150 |     # Skip empty lines
+     151 |     for (let i = 0; i < len(lines); i++) {
+     152 |         if (lines[i] == null || lines[i].trim() == "") {
+     153 |             continue;
+     154 |         }
+     155 |         
+     156 |         let values = lines[i].split(",");
+     157 |         result.push(values);
+     158 |     }
+     159 |     
+     160 |     return result;
+     161 | }
+     162 | 
+     163 | let csv_data = read_csv(csv_filename);
+     164 | if (csv_data != null) {
+     165 |     print("CSV file content:");
+     166 |     for (let i = 0; i < len(csv_data); i++) {
+     167 |         if (csv_data[i] != null) {
+     168 |             print("Row", i + 1, ":", csv_data[i]);
+     169 |         }
+     170 |     }
+     171 | }
+     172 | 
+     173 | # JSON file operations
+     174 | print("\n=== JSON File Operations ===");
+     175 | 
+     176 | # Create sample data
+     177 | let config = {
+     178 |     "app_name": "Quantum Language",
+     179 |     "version": "1.0.0",
+     180 |     "settings": {
+     181 |         "debug": true,
+     182 |         "max_connections": 100,
+     183 |         "timeout": 30
+     184 |     },
+     185 |     "features": ["interpreter", "compiler", "debugger"]
+     186 | };
+     187 | 
+     188 | # Simple JSON serialization (basic implementation)
+     189 | function to_json(obj) {
+     190 |     if (typeof(obj) == "string") {
+     191 |         return "\"" + obj + "\"";
+     192 |     } else if (typeof(obj) == "number") {
+     193 |         return str(obj);
+     194 |     } else if (typeof(obj) == "boolean") {
+     195 |         return obj ? "true" : "false";
+     196 |     } else if (typeof(obj) == "null") {
+     197 |         return "null";
+     198 |     } else if (typeof(obj) == "array") {
+     199 |         if (obj == null) {
+     200 |             return "[]";
+     201 |         }
+     202 |         let result = "[";
+     203 |         for (let i = 0; i < len(obj); i++) {
+     204 |             if (i > 0) result += ",";
+     205 |             result += to_json(obj[i]);
+     206 |         }
+     207 |         result += "]";
+     208 |         return result;
+     209 |     } else if (typeof(obj) == "object") {
+     210 |         let result = "{";
+     211 |         let first = true;
+     212 |         for (let key in obj) {
+     213 |             if (!first) result += ",";
+     214 |             result += "\"" + key + "\":" + to_json(obj[key]);
+     215 |             first = false;
+     216 |         }
+     217 |         result += "}";
+     218 |         return result;
+     219 |     }
+     220 |     return "{}";
+     221 | }
+     222 | 
+     223 | # Write JSON file
+     224 | let json_filename = "config.json";
+     225 | let json_content = to_json(config);
+     226 | 
+     227 | if (write_file(json_filename, json_content)) {
+     228 |     print("JSON file written successfully:", json_filename);
+     229 | } else {
+     230 |     print("Failed to write JSON file");
+     231 | }
+     232 | 
+     233 | # Read and display JSON file
+     234 | let json_read = read_file(json_filename);
+     235 | if (json_read != null) {
+     236 |     print("JSON file content:");
+     237 |     print(json_read);
+     238 | }
+     239 | 
+     240 | # Log file operations
+     241 | print("\n=== Log File Operations ===");
+     242 | 
+     243 | class Logger {
+     244 |     constructor(filename) {
+     245 |         this.filename = filename;
+     246 |         this.log_levels = {"DEBUG": 0, "INFO": 1, "WARNING": 2, "ERROR": 3};
+     247 |         this.current_level = 1;  # INFO level
+     248 |     }
+     249 |     
+     250 |     set_level(level) {
+     251 |         this.current_level = this.log_levels[level];
+     252 |     }
+     253 |     
+     254 |     log(level, message) {
+     255 |         if (this.log_levels[level] >= this.current_level) {
+     256 |             let timestamp = time();
+     257 |             let log_entry = "[" + str(timestamp) + "] " + level + ": " + message + "\n";
+     258 |             
+     259 |             # Write to file (append mode)
+     260 |             write_file(this.filename, log_entry, true);
+     261 |             
+     262 |             # Also print to console
+     263 |             print(log_entry.trim());
+     264 |         }
+     265 |     }
+     266 |     
+     267 |     debug(message) {
+     268 |         this.log("DEBUG", message);
+     269 |     }
+     270 |     
+     271 |     info(message) {
+     272 |         this.log("INFO", message);
+     273 |     }
+     274 |     
+     275 |     warning(message) {
+     276 |         this.log("WARNING", message);
+     277 |     }
+     278 |     
+     279 |     error(message) {
+     280 |         this.log("ERROR", message);
+     281 |     }
+     282 |     
+     283 |     clear_log() {
+     284 |         write_file(this.filename, "");
+     285 |         print("Log file cleared:", this.filename);
+     286 |     }
+     287 |     
+     288 |     read_log() {
+     289 |         let content = read_file(this.filename);
+     290 |         if (content != null) {
+     291 |             print("Log file contents:");
+     292 |             print(content);
+     293 |         } else {
+     294 |             print("Log file is empty or doesn't exist");
+     295 |         }
+     296 |     }
+     297 | }
+     298 | 
+     299 | # Test logger
+     300 | let logger = Logger("application.log");
+     301 | logger.clear_log();
+     302 | 
+     303 | logger.set_level("DEBUG");
+     304 | logger.debug("Application starting...");
+     305 | logger.info("User logged in");
+     306 | logger.warning("Low disk space");
+     307 | logger.error("Database connection failed");
+     308 | logger.info("Application shutting down...");
+     309 | 
+     310 | print("\n--- Log File Contents ---");
+     311 | logger.read_log();
+     312 | 
+     313 | # File processing utilities
+     314 | print("\n=== File Processing Utilities ===");
+     315 | 
+     316 | function count_lines(filename) {
+     317 |     let content = read_file(filename);
+     318 |     if (content == null) {
+     319 |         return 0;
+     320 |     }
+     321 |     
+     322 |     let lines = content.split("\n");
+     323 |     return len(lines);
+     324 | }
+     325 | 
+     326 | function count_words(filename) {
+     327 |     let content = read_file(filename);
+     328 |     if (content == null) {
+     329 |         return 0;
+     330 |     }
+     331 |     
+     332 |     let words = content.split(" ");  # Split by space
+     333 |     let word_count = 0;
+     334 |     
+     335 |     for (let i = 0; i < len(words); i++) {
+     336 |         if (words[i].trim() != "") {
+     337 |             word_count++;
+     338 |         }
+     339 |     }
+     340 |     
+     341 |     return word_count;
+     342 | }
+     343 | 
+     344 | function find_in_file(filename, search_term) {
+     345 |     let content = read_file(filename);
+     346 |     if (content == null) {
+     347 |         return [];
+     348 |     }
+     349 |     
+     350 |     let lines = content.split("\n");
+     351 |     let matches = [];
+     352 |     
+     353 |     for (let i = 0; i < len(lines); i++) {
+     354 |         if (lines[i] != null && lines[i].contains(search_term)) {
+     355 |             matches.push({"line_number": i + 1, "content": lines[i]});
+     356 |         }
+     357 |     }
+     358 |     
+     359 |     return matches;
+     360 | }
+     361 | 
+     362 | # Test file utilities
+     363 | print("File analysis for:", filename);
+     364 | print("Line count:", count_lines(filename));
+     365 | print("Word count:", count_words(filename));
+     366 | 
+     367 | print("\nSearching for 'Quantum' in file:");
+     368 | let search_results = find_in_file(filename, "Quantum");
+     369 | for (let i = 0; i < len(search_results); i++) {
+     370 |     if (search_results[i] != null) {
+     371 |         print("Line", search_results[i].line_number, ":", search_results[i].content);
+     372 |     }
+     373 | }
+     374 | 
+     375 | # Batch file operations
+     376 | print("\n=== Batch File Operations ===");
+     377 | 
+     378 | function process_files_in_directory(pattern, operation) {
+     379 |     # This is a simplified version - in a real implementation,
+     380 |     # you would use actual directory listing
+     381 |     let test_files = ["test1.txt", "test2.txt", "test3.txt"];
+     382 |     
+     383 |     for (let i = 0; i < len(test_files); i++) {
+     384 |         let filename = test_files[i];
+     385 |         if (filename.contains(pattern)) {
+     386 |             operation(filename);
+     387 |         }
+     388 |     }
+     389 | }
+     390 | 
+     391 | # Create test files for batch processing
+     392 | let test_files = ["test1.txt", "test2.txt", "test3.txt"];
+     393 | for (let i = 0; i < len(test_files); i++) {
+     394 |     let content = "This is test file " + str(i + 1) + "\nContent for batch processing.";
+     395 |     write_file(test_files[i], content);
+     396 | }
+     397 | 
+     398 | # Batch operation: count lines in all test files
+     399 | print("Batch processing - counting lines:");
+     400 | process_files_in_directory("test", function(filename) {
+     401 |     let lines = count_lines(filename);
+     402 |     print(filename, ":", lines, "lines");
+     403 | });
+     404 | 
+     405 | # File backup utility
+     406 | print("\n=== File Backup Utility ===");
+     407 | 
+     408 | function backup_file(original_filename, backup_suffix) {
+     409 |     let content = read_file(original_filename);
+     410 |     if (content == null) {
+     411 |         print("Cannot backup file:", original_filename, "(file not found)");
+     412 |         return false;
+     413 |     }
+     414 |     
+     415 |     let backup_filename = original_filename + backup_suffix;
+     416 |     if (write_file(backup_filename, content)) {
+     417 |         print("Backup created:", backup_filename);
+     418 |         return true;
+     419 |     } else {
+     420 |         print("Failed to create backup for:", original_filename);
+     421 |         return false;
+     422 |     }
+     423 | }
+     424 | 
+     425 | # Create backup of main test file
+     426 | let timestamp = str(time()).slice(0, 10);  # Simple timestamp
+     427 | backup_file(filename, ".backup." + timestamp);
+     428 | 
+     429 | # File comparison utility
+     430 | print("\n=== File Comparison Utility ===");
+     431 | 
+     432 | function compare_files(file1, file2) {
+     433 |     let content1 = read_file(file1);
+     434 |     let content2 = read_file(file2);
+     435 |     
+     436 |     if (content1 == null || content2 == null) {
+     437 |         return {"identical": false, "reason": "One or both files not found"};
+     438 |     }
+     439 |     
+     440 |     if (len(content1) != len(content2)) {
+     441 |         return {"identical": false, "reason": "Different file sizes"};
+     442 |     }
+     443 |     
+     444 |     if (content1 == content2) {
+     445 |         return {"identical": true, "reason": "Files are identical"};
+     446 |     } else {
+     447 |         # Find first difference
+     448 |         for (let i = 0; i < len(content1); i++) {
+     449 |             if (content1[i] != content2[i]) {
+     450 |                 return {
+     451 |                     "identical": false, 
+     452 |                     "reason": "Content differs at position " + str(i),
+     453 |                     "char1": content1[i],
+     454 |                     "char2": content2[i]
+     455 |                 };
+     456 |             }
+     457 |         }
+     458 |     }
+     459 |     
+     460 |     return {"identical": false, "reason": "Unknown difference"};
+     461 | }
+     462 | 
+     463 | # Compare original file with copy
+     464 | let comparison = compare_files(filename, copy_filename);
+     465 | print("File comparison result:");
+     466 | print("Identical:", comparison.identical);
+     467 | print("Reason:", comparison.reason);
+     468 | 
+     469 | # Cleanup
+     470 | print("\n=== Cleanup ===");
+     471 | print("Cleaning up test files...");
+     472 | 
+     473 | # Note: In a real implementation, you would have file deletion capability
+     474 | # For this example, we'll just list what would be cleaned up
+     475 | let files_to_cleanup = [filename, copy_filename, csv_filename, json_filename, "application.log"];
+     476 | for (let i = 0; i < len(test_files); i++) {
+     477 |     files_to_cleanup.push(test_files[i]);
+     478 | }
+     479 | 
+     480 | print("Files that would be cleaned up:");
+     481 | for (let i = 0; i < len(files_to_cleanup); i++) {
+     482 |     print("  ", files_to_cleanup[i]);
+     483 | }
+     484 | 
+     485 | print("\nFile operations examples completed!");
+--- End Source ---
+
+========================================================================
+
+[PASS] tests\file reader.sa
+
+[FAIL] tests\form input.sa
+------------------------------------------------------------------------
+Error  : ParseError: Expected variable name (got 'input')
+Line   : 3   Col : 9
+
+--- Source Code (tests\form input.sa) ---
+       1 | // Simple Form Input Handler
+       2 | function handleFormInput() {
+>>>    3 |   const input = document.getElementById('textInput');
+       4 |   const display = document.getElementById('displayText');
+       5 |   
+       6 |   input.addEventListener('input', function() {
+       7 |     display.textContent = this.value;
+       8 |   });
+       9 | }
+      10 | 
+      11 | // Form validation
+      12 | function validateForm() {
+      13 |   const form = document.querySelector('#myForm');
+      14 |   const email = document.querySelector('#email');
+      15 |   
+      16 |   form.addEventListener('submit', function(e) {
+      17 |     e.preventDefault();
+      18 |     
+      19 |     if (email.value.includes('@')) {
+      20 |       console.log('Form submitted successfully!');
+      21 |       this.reset();
+      22 |     } else {
+      23 |       alert('Please enter a valid email');
+      24 |     }
+      25 |   });
+      26 | }
+      27 | 
+      28 | // Initialize
+      29 | handleFormInput();
+      30 | validateForm();
+      31 | 
+      32 | console.log('Form handlers ready!');
+--- End Source ---
+
+========================================================================
+
+[PASS] tests\free_list.sa
+
+[PASS] tests\graph_algorithms.sa
+
+[PASS] tests\graph_isomorphism.sa
+
+[PASS] tests\guess_number.sa
+
+[FAIL] tests\hangman.sa
+------------------------------------------------------------------------
+Error  : ParseError: Expected ']' (got '
+               -----
+               |   |
+                   |
+                   |
+                   |
+                   |
+             ---------
+            ')
+Line   : 34   Col : 15
+
+--- Source Code (tests\hangman.sa) ---
+       1 | # Hangman Game
+       2 | # Classic word guessing game
+       3 | 
+       4 | import random
+       5 | 
+       6 | class HangmanGame:
+       7 |     def __init__(self):
+       8 |         self.word_list = [
+       9 |             "python", "programming", "computer", "algorithm", "function",
+      10 |             "variable", "loop", "condition", "array", "string",
+      11 |             "class", "object", "method", "inheritance", "polymorphism",
+      12 |             "database", "network", "server", "client", "protocol",
+      13 |             "encryption", "security", "authentication", "authorization",
+      14 |             "javascript", "html", "css", "react", "angular",
+      15 |             "science", "mathematics", "physics", "chemistry", "biology",
+      16 |             "geography", "history", "literature", "philosophy", "psychology"
+      17 |         ]
+      18 |         
+      19 |         self.difficulties = {
+      20 |             'easy': {'words': 6, 'guesses': 8},
+      21 |             'medium': {'words': 8, 'guesses': 6},
+      22 |             'hard': {'words': 10, 'guesses': 4}
+      23 |         }
+      24 |     
+      25 |     def select_word(self, difficulty='medium'):
+      26 |         """Select a random word based on difficulty"""
+      27 |         min_length = self.difficulties[difficulty]['words']
+      28 |         suitable_words = [word for word in self.word_list if len(word) >= min_length]
+      29 |         return random.choice(suitable_words)
+      30 |     
+      31 |     def display_hangman(self, wrong_guesses):
+      32 |         """Display hangman figure based on wrong guesses"""
+      33 |         stages = [
+>>>   34 |             """
+      35 |                -----
+      36 |                |   |
+      37 |                    |
+      38 |                    |
+      39 |                    |
+      40 |                    |
+      41 |              ---------
+      42 |             """,
+      43 |             """
+      44 |                -----
+      45 |                |   |
+      46 |                O   |
+      47 |                    |
+      48 |                    |
+      49 |                    |
+      50 |              ---------
+      51 |             """,
+      52 |             """
+      53 |                -----
+      54 |                |   |
+      55 |                O   |
+      56 |                |   |
+      57 |                    |
+      58 |                    |
+      59 |              ---------
+      60 |             """,
+      61 |             """
+      62 |                -----
+      63 |                |   |
+      64 |                O   |
+      65 |               /|   |
+      66 |                    |
+      67 |                    |
+      68 |              ---------
+      69 |             """,
+      70 |             """
+      71 |                -----
+      72 |                |   |
+      73 |                O   |
+      74 |               /|\\  |
+      75 |                    |
+      76 |                    |
+      77 |              ---------
+      78 |             """,
+      79 |             """
+      80 |                -----
+      81 |                |   |
+      82 |                O   |
+      83 |               /|\\  |
+      84 |               /    |
+      85 |                    |
+      86 |              ---------
+      87 |             """,
+      88 |             """
+      89 |                -----
+      90 |                |   |
+      91 |                O   |
+      92 |               /|\\  |
+      93 |               / \\  |
+      94 |                    |
+      95 |              ---------
+      96 |             """
+      97 |         ]
+      98 |         
+      99 |         stage_index = min(wrong_guesses, len(stages) - 1)
+     100 |         print(stages[stage_index])
+     101 |     
+     102 |     def display_word_state(self, word, guessed_letters):
+     103 |         """Display the current state of the word with guessed letters"""
+     104 |         display = ""
+     105 |         for letter in word:
+     106 |             if letter in guessed_letters:
+     107 |                 display += letter + " "
+     108 |             else:
+     109 |                 display += "_ "
+     110 |         print(display.strip())
+     111 |     
+     112 |     def get_guess(self, guessed_letters):
+     113 |         """Get a valid guess from the player"""
+     114 |         while True:
+     115 |             guess = input("Enter a letter: ").lower().strip()
+     116 |             
+     117 |             if len(guess) != 1:
+     118 |                 print("Please enter a single letter")
+     119 |             elif not guess.isalpha():
+     120 |                 print("Please enter a letter")
+     121 |             elif guess in guessed_letters:
+     122 |                 print("You already guessed that letter")
+     123 |             else:
+     124 |                 return guess
+     125 |     
+     126 |     def calculate_score(self, word, wrong_guesses, max_guesses):
+     127 |         """Calculate score based on performance"""
+     128 |         if wrong_guesses >= max_guesses:
+     129 |             return 0  # Lost the game
+     130 |         
+     131 |         # Base score for winning
+     132 |         base_score = 100
+     133 |         
+     134 |         # Penalty for wrong guesses
+     135 |         penalty = wrong_guesses * 10
+     136 |         
+     137 |         # Bonus for word difficulty
+     138 |         difficulty_bonus = len(word) * 2
+     139 |         
+     140 |         total_score = max(0, base_score - penalty + difficulty_bonus)
+     141 |         return total_score
+     142 |     
+     143 |     def play_game(self):
+     144 |         """Play a single game of hangman"""
+     145 |         print("\nWelcome to Hangman!")
+     146 |         print("=" * 25)
+     147 |         
+     148 |         # Select difficulty
+     149 |         print("\nSelect Difficulty:")
+     150 |         print("1. Easy (8 guesses)")
+     151 |         print("2. Medium (6 guesses)")
+     152 |         print("3. Hard (4 guesses)")
+     153 |         
+     154 |         while True:
+     155 |             try:
+     156 |                 diff_choice = input("Enter difficulty (1-3): ")
+     157 |                 if diff_choice == '1':
+     158 |                     difficulty = 'easy'
+     159 |                     break
+     160 |                 elif diff_choice == '2':
+     161 |                     difficulty = 'medium'
+     162 |                     break
+     163 |                 elif diff_choice == '3':
+     164 |                     difficulty = 'hard'
+     165 |                     break
+     166 |                 else:
+     167 |                     print("Please enter 1, 2, or 3")
+     168 |             except ValueError:
+     169 |                 print("Please enter a valid number")
+     170 |         
+     171 |         # Initialize game
+     172 |         word = self.select_word(difficulty)
+     173 |         max_guesses = self.difficulties[difficulty]['guesses']
+     174 |         guessed_letters = set()
+     175 |         wrong_guesses = 0
+     176 |         
+     177 |         print(f"\nDifficulty: {difficulty.capitalize()}")
+     178 |         print(f"You have {max_guesses} guesses")
+     179 |         print(f"The word has {len(word)} letters")
+     180 |         
+     181 |         # Game loop
+     182 |         while wrong_guesses < max_guesses:
+     183 |             print(f"\nGuesses remaining: {max_guesses - wrong_guesses}")
+     184 |             self.display_hangman(wrong_guesses)
+     185 |             self.display_word_state(word, guessed_letters)
+     186 |             
+     187 |             # Show guessed letters
+     188 |             if guessed_letters:
+     189 |                 print(f"Guessed letters: {', '.join(sorted(guessed_letters))}")
+     190 |             
+     191 |             # Check if player won
+     192 |             if all(letter in guessed_letters for letter in word):
+     193 |                 score = self.calculate_score(word, wrong_guesses, max_guesses)
+     194 |                 print(f"\n🎉 Congratulations! You guessed the word: {word}")
+     195 |                 print(f"Score: {score}")
+     196 |                 return True
+     197 |             
+     198 |             # Get player guess
+     199 |             guess = self.get_guess(guessed_letters)
+     200 |             guessed_letters.add(guess)
+     201 |             
+     202 |             # Check guess
+     203 |             if guess in word:
+     204 |                 print(f"✓ Good guess! '{guess}' is in the word")
+     205 |             else:
+     206 |                 print(f"✗ Wrong guess! '{guess}' is not in the word")
+     207 |                 wrong_guesses += 1
+     208 |         
+     209 |         # Player lost
+     210 |         self.display_hangman(wrong_guesses)
+     211 |         print(f"\n💀 Game Over! The word was: {word}")
+     212 |         print("Score: 0")
+     213 |         return False
+     214 | 
+     215 | def hangman_tournament():
+     216 |     """Multi-round tournament mode"""
+     217 |     print("\nHangman Tournament")
+     218 |     print("=" * 25)
+     219 |     
+     220 |     try:
+     221 |         rounds = int(input("Enter number of rounds (1-10): "))
+     222 |         rounds = max(1, min(10, rounds))
+     223 |     except ValueError:
+     224 |         rounds = 3
+     225 |     
+     226 |     game = HangmanGame()
+     227 |     scores = []
+     228 |     wins = 0
+     229 |     
+     230 |     for round_num in range(1, rounds + 1):
+     231 |         print(f"\n{'='*40}")
+     232 |         print(f"Round {round_num} of {rounds}")
+     233 |         print(f"{'='*40}")
+     234 |         
+     235 |         won = game.play_game()
+     236 |         
+     237 |         if won:
+     238 |             wins += 1
+     239 |         
+     240 |         if round_num < rounds:
+     241 |             input("Press Enter to continue to next round...")
+     242 |     
+     243 |     # Show tournament results
+     244 |     print(f"\n{'='*40}")
+     245 |     print("TOURNAMENT RESULTS")
+     246 |     print(f"{'='*40}")
+     247 |     print(f"Rounds played: {rounds}")
+     248 |     print(f"Wins: {wins}")
+     249 |     print(f"Losses: {rounds - wins}")
+     250 |     print(f"Win rate: {(wins/rounds)*100:.1f}%")
+     251 |     
+     252 |     if wins == rounds:
+     253 |         print("🏆 Perfect tournament! You won all rounds!")
+     254 |     elif wins >= rounds * 0.7:
+     255 |         print("🌟 Excellent performance!")
+     256 |     elif wins >= rounds * 0.5:
+     257 |         print("👍 Good job!")
+     258 |     else:
+     259 |         print("📚 Keep practicing!")
+     260 | 
+     261 | def word_practice_mode():
+     262 |     """Practice mode with hints"""
+     263 |     print("\nWord Practice Mode")
+     264 |     print("=" * 25)
+     265 |     
+     266 |     game = HangmanGame()
+     267 |     word = random.choice(game.word_list)
+     268 |     
+     269 |     print(f"Practice word: {len(word)} letters")
+     270 |     print("Type 'hint' for a hint (costs 2 points)")
+     271 |     
+     272 |     guessed_letters = set()
+     273 |     wrong_guesses = 0
+     274 |     max_guesses = 8
+     275 |     hints_used = 0
+     276 |     
+     277 |     while wrong_guesses < max_guesses:
+     278 |         print(f"\nGuesses remaining: {max_guesses - wrong_guesses}")
+     279 |         game.display_hangman(wrong_guesses)
+     280 |         game.display_word_state(word, guessed_letters)
+     281 |         
+     282 |         if all(letter in guessed_letters for letter in word):
+     283 |             print(f"\n🎉 Great job! The word was: {word}")
+     284 |             return
+     285 |         
+     286 |         # Get input
+     287 |         user_input = input("Enter a letter (or 'hint'): ").lower().strip()
+     288 |         
+     289 |         if user_input == 'hint':
+     290 |             if hints_used < 2:
+     291 |                 # Find an unguessed letter
+     292 |                 unguessed = [letter for letter in word if letter not in guessed_letters]
+     293 |                 if unguessed:
+     294 |                     hint_letter = random.choice(unguessed)
+     295 |                     print(f"💡 Hint: The letter '{hint_letter}' is in the word")
+     296 |                     hints_used += 1
+     297 |                 else:
+     298 |                     print("No hints available")
+     299 |             else:
+     300 |                 print("You've used all available hints")
+     301 |             continue
+     302 |         
+     303 |         # Validate input
+     304 |         if len(user_input) != 1 or not user_input.isalpha():
+     305 |             print("Please enter a single letter")
+     306 |             continue
+     307 |         
+     308 |         if user_input in guessed_letters:
+     309 |             print("You already guessed that letter")
+     310 |             continue
+     311 |         
+     312 |         guessed_letters.add(user_input)
+     313 |         
+     314 |         if user_input in word:
+     315 |             print(f"✓ Good guess! '{user_input}' is in the word")
+     316 |         else:
+     317 |             print(f"✗ Wrong guess! '{user_input}' is not in the word")
+     318 |             wrong_guesses += 1
+     319 |     
+     320 |     print(f"\n💀 Practice over! The word was: {word}")
+     321 | 
+     322 | def main_menu():
+     323 |     """Main menu for hangman game"""
+     324 |     print("HANGMAN GAME")
+     325 |     print("=" * 15)
+     326 |     
+     327 |     game = HangmanGame()
+     328 |     
+     329 |     while True:
+     330 |         print("\nMain Menu:")
+     331 |         print("1. Single Game")
+     332 |         print("2. Tournament Mode")
+     333 |         print("3. Practice Mode")
+     334 |         print("4. Instructions")
+     335 |         print("5. Exit")
+     336 |         
+     337 |         choice = input("Enter your choice (1-5): ")
+     338 |         
+     339 |         if choice == '1':
+     340 |             game.play_game()
+     341 |         
+     342 |         elif choice == '2':
+     343 |             hangman_tournament()
+     344 |         
+     345 |         elif choice == '3':
+     346 |             word_practice_mode()
+     347 |         
+     348 |         elif choice == '4':
+     349 |             print("\nHOW TO PLAY HANGMAN:")
+     350 |             print("-" * 30)
+     351 |             print("1. The computer selects a random word")
+     352 |             print("2. You guess letters one at a time")
+     353 |             print("3. Correct guesses reveal letters in the word")
+     354 |             print("4. Wrong guesses add parts to the hangman")
+     355 |             print("5. Win by guessing the word before the hangman is complete")
+     356 |             print("6. Different difficulties have different word lengths and guess limits")
+     357 |             print("\nSCORING:")
+     358 |             print("- Base score: 100 points")
+     359 |             print("- Penalty: -10 points per wrong guess")
+     360 |             print("- Bonus: +2 points per letter in the word")
+     361 |         
+     362 |         elif choice == '5':
+     363 |             print("Thanks for playing Hangman!")
+     364 |             break
+     365 |         
+     366 |         else:
+     367 |             print("Invalid choice. Please try again.")
+     368 | 
+     369 | # Run the hangman game
+     370 | main_menu()
+--- End Source ---
+
+========================================================================
+
+[PASS] tests\hash_function.sa
+
+[PASS] tests\hash_map.sa
+
+[PASS] tests\hash_set.sa
+
+[PASS] tests\hash_table.sa
+
+[FAIL] tests\hash_table_iterator.sa
+------------------------------------------------------------------------
+Error  : ParseError: Unexpected token: '\n'
+Line   : 347   Col : 52
+
+--- Source Code (tests\hash_table_iterator.sa) ---
+       1 | // Hash Table with Iterator Implementation in C++
+       2 | #include <iostream>
+       3 | #include <vector>
+       4 | #include <list>
+       5 | #include <iterator>
+       6 | #include <string>
+       7 | using namespace std;
+       8 | 
+       9 | template<typename K, typename V>
+      10 | class IterableHashTable {
+      11 | private:
+      12 |     struct Entry {
+      13 |         K key;
+      14 |         V value;
+      15 |         
+      16 |         Entry(const K& k, const V& v) : key(k), value(v) {}
+      17 |     };
+      18 | 
+      19 |     vector<list<Entry>> table;
+      20 |     size_t capacity;
+      21 |     size_t size;
+      22 | 
+      23 |     size_t hashFunction(const K& key) const {
+      24 |         hash<K> hasher;
+      25 |         return hasher(key) % capacity;
+      26 |     }
+      27 | 
+      28 |     void rehash() {
+      29 |         vector<list<Entry>> oldTable = table;
+      30 |         size_t oldCapacity = capacity;
+      31 |         
+      32 |         capacity *= 2;
+      33 |         table.clear();
+      34 |         table.resize(capacity);
+      35 |         size = 0;
+      36 |         
+      37 |         for (size_t i = 0; i < oldCapacity; ++i) {
+      38 |             for (const Entry& entry : oldTable[i]) {
+      39 |                 insert(entry.key, entry.value);
+      40 |             }
+      41 |         }
+      42 |     }
+      43 | 
+      44 | public:
+      45 |     IterableHashTable(size_t initialCapacity = 16) : capacity(initialCapacity), size(0) {
+      46 |         table.resize(capacity);
+      47 |     }
+      48 | 
+      49 |     void insert(const K& key, const V& value) {
+      50 |         if (static_cast<double>(size) / capacity > 0.75) {
+      51 |             rehash();
+      52 |         }
+      53 |         
+      54 |         size_t index = hashFunction(key);
+      55 |         
+      56 |         for (Entry& entry : table[index]) {
+      57 |             if (entry.key == key) {
+      58 |                 entry.value = value;
+      59 |                 return;
+      60 |             }
+      61 |         }
+      62 |         
+      63 |         table[index].emplace_back(key, value);
+      64 |         size++;
+      65 |     }
+      66 | 
+      67 |     bool remove(const K& key) {
+      68 |         size_t index = hashFunction(key);
+      69 |         
+      70 |         for (auto it = table[index].begin(); it != table[index].end(); ++it) {
+      71 |             if (it->key == key) {
+      72 |                 table[index].erase(it);
+      73 |                 size--;
+      74 |                 return true;
+      75 |             }
+      76 |         }
+      77 |         
+      78 |         return false;
+      79 |     }
+      80 | 
+      81 |     V* find(const K& key) {
+      82 |         size_t index = hashFunction(key);
+      83 |         
+      84 |         for (Entry& entry : table[index]) {
+      85 |             if (entry.key == key) {
+      86 |                 return &entry.value;
+      87 |             }
+      88 |         }
+      89 |         
+      90 |         return nullptr;
+      91 |     }
+      92 | 
+      93 |     bool contains(const K& key) const {
+      94 |         size_t index = hashFunction(key);
+      95 |         
+      96 |         for (const Entry& entry : table[index]) {
+      97 |             if (entry.key == key) {
+      98 |                 return true;
+      99 |             }
+     100 |         }
+     101 |         
+     102 |         return false;
+     103 |     }
+     104 | 
+     105 |     size_t getSize() const { return size; }
+     106 |     size_t getCapacity() const { return capacity; }
+     107 | 
+     108 |     // Iterator implementation
+     109 |     class Iterator {
+     110 |     private:
+     111 |         vector<list<Entry>>* table;
+     112 |         size_t bucketIndex;
+     113 |         typename list<Entry>::iterator listIt;
+     114 |         bool atEnd;
+     115 | 
+     116 |         void advanceToNextValid() {
+     117 |             while (bucketIndex < table->size()) {
+     118 |                 if (listIt != (*table)[bucketIndex].end()) {
+     119 |                     break;
+     120 |                 }
+     121 |                 bucketIndex++;
+     122 |                 if (bucketIndex < table->size()) {
+     123 |                     listIt = (*table)[bucketIndex].begin();
+     124 |                 }
+     125 |             }
+     126 |             
+     127 |             if (bucketIndex >= table->size()) {
+     128 |                 atEnd = true;
+     129 |             }
+     130 |         }
+     131 | 
+     132 |     public:
+     133 |         Iterator(vector<list<Entry>>* t, bool end = false) 
+     134 |             : table(t), bucketIndex(0), atEnd(end) {
+     135 |             if (!end && !table->empty()) {
+     136 |                 listIt = (*table)[0].begin();
+     137 |                 advanceToNextValid();
+     138 |             } else {
+     139 |                 atEnd = true;
+     140 |             }
+     141 |         }
+     142 | 
+     143 |         Iterator& operator++() {
+     144 |             if (atEnd) return *this;
+     145 |             
+     146 |             ++listIt;
+     147 |             advanceToNextValid();
+     148 |             return *this;
+     149 |         }
+     150 | 
+     151 |         Iterator operator++(int) {
+     152 |             Iterator temp = *this;
+     153 |             ++(*this);
+     154 |             return temp;
+     155 |         }
+     156 | 
+     157 |         Entry& operator*() {
+     158 |             return *listIt;
+     159 |         }
+     160 | 
+     161 |         Entry* operator->() {
+     162 |             return &(*listIt);
+     163 |         }
+     164 | 
+     165 |         bool operator==(const Iterator& other) const {
+     166 |             return atEnd == other.atEnd && 
+     167 |                    (atEnd || (bucketIndex == other.bucketIndex && listIt == other.listIt));
+     168 |         }
+     169 | 
+     170 |         bool operator!=(const Iterator& other) const {
+     171 |             return !(*this == other);
+     172 |         }
+     173 |     };
+     174 | 
+     175 |     Iterator begin() {
+     176 |         return Iterator(&table);
+     177 |     }
+     178 | 
+     179 |     Iterator end() {
+     180 |         return Iterator(&table, true);
+     181 |     }
+     182 | 
+     183 |     // Const iterator
+     184 |     class ConstIterator {
+     185 |     private:
+     186 |         const vector<list<Entry>>* table;
+     187 |         size_t bucketIndex;
+     188 |         typename list<Entry>::const_iterator listIt;
+     189 |         bool atEnd;
+     190 | 
+     191 |         void advanceToNextValid() {
+     192 |             while (bucketIndex < table->size()) {
+     193 |                 if (listIt != (*table)[bucketIndex].end()) {
+     194 |                     break;
+     195 |                 }
+     196 |                 bucketIndex++;
+     197 |                 if (bucketIndex < table->size()) {
+     198 |                     listIt = (*table)[bucketIndex].begin();
+     199 |                 }
+     200 |             }
+     201 |             
+     202 |             if (bucketIndex >= table->size()) {
+     203 |                 atEnd = true;
+     204 |             }
+     205 |         }
+     206 | 
+     207 |     public:
+     208 |         ConstIterator(const vector<list<Entry>>* t, bool end = false) 
+     209 |             : table(t), bucketIndex(0), atEnd(end) {
+     210 |             if (!end && !table->empty()) {
+     211 |                 listIt = (*table)[0].begin();
+     212 |                 advanceToNextValid();
+     213 |             } else {
+     214 |                 atEnd = true;
+     215 |             }
+     216 |         }
+     217 | 
+     218 |         ConstIterator& operator++() {
+     219 |             if (atEnd) return *this;
+     220 |             
+     221 |             ++listIt;
+     222 |             advanceToNextValid();
+     223 |             return *this;
+     224 |         }
+     225 | 
+     226 |         ConstIterator operator++(int) {
+     227 |             ConstIterator temp = *this;
+     228 |             ++(*this);
+     229 |             return temp;
+     230 |         }
+     231 | 
+     232 |         const Entry& operator*() const {
+     233 |             return *listIt;
+     234 |         }
+     235 | 
+     236 |         const Entry* operator->() const {
+     237 |             return &(*listIt);
+     238 |         }
+     239 | 
+     240 |         bool operator==(const ConstIterator& other) const {
+     241 |             return atEnd == other.atEnd && 
+     242 |                    (atEnd || (bucketIndex == other.bucketIndex && listIt == other.listIt));
+     243 |         }
+     244 | 
+     245 |         bool operator!=(const ConstIterator& other) const {
+     246 |             return !(*this == other);
+     247 |         }
+     248 |     };
+     249 | 
+     250 |     ConstIterator begin() const {
+     251 |         return ConstIterator(&table);
+     252 |     }
+     253 | 
+     254 |     ConstIterator end() const {
+     255 |         return ConstIterator(&table, true);
+     256 |     }
+     257 | 
+     258 |     ConstIterator cbegin() const {
+     259 |         return begin();
+     260 |     }
+     261 | 
+     262 |     ConstIterator cend() const {
+     263 |         return end();
+     264 |     }
+     265 | 
+     266 |     void display() const {
+     267 |         cout << "Iterable Hash Table:" << endl;
+     268 |         cout << "Size: " << size << ", Capacity: " << capacity << endl;
+     269 |         cout << "Contents:" << endl;
+     270 |         
+     271 |         for (const auto& entry : *this) {
+     272 |             cout << "[" << entry.key << ": " << entry.value << "] ";
+     273 |         }
+     274 |         cout << endl;
+     275 |     }
+     276 | 
+     277 |     vector<K> getKeys() const {
+     278 |         vector<K> keys;
+     279 |         for (const auto& entry : *this) {
+     280 |             keys.push_back(entry.key);
+     281 |         }
+     282 |         return keys;
+     283 |     }
+     284 | 
+     285 |     vector<V> getValues() const {
+     286 |         vector<V> values;
+     287 |         for (const auto& entry : *this) {
+     288 |             values.push_back(entry.value);
+     289 |         }
+     290 |         return values;
+     291 |     }
+     292 | };
+     293 | 
+     294 | // Range-based for loop support example
+     295 | template<typename K, typename V>
+     296 | void printHashTable(const IterableHashTable<K, V>& ht) {
+     297 |     cout << "Printing using range-based for loop:" << endl;
+     298 |     for (const auto& entry : ht) {
+     299 |         cout << entry.key << " -> " << entry.value << endl;
+     300 |     }
+     301 | }
+     302 | 
+     303 | // STL algorithm compatibility example
+     304 | template<typename K, typename V>
+     305 | V findMaxValue(const IterableHashTable<K, V>& ht) {
+     306 |     if (ht.getSize() == 0) {
+     307 |         return V{};
+     308 |     }
+     309 |     
+     310 |     auto maxIt = max_element(ht.begin(), ht.end(), 
+     311 |         [](const auto& a, const auto& b) {
+     312 |             return a.value < b.value;
+     313 |         });
+     314 |     
+     315 |     return maxIt->value;
+     316 | }
+     317 | 
+     318 | int main() {
+     319 |     IterableHashTable<string, int> iht;
+     320 |     
+     321 |     iht.insert("apple", 5);
+     322 |     iht.insert("banana", 3);
+     323 |     iht.insert("orange", 7);
+     324 |     iht.insert("grape", 2);
+     325 |     iht.insert("mango", 4);
+     326 |     
+     327 |     iht.display();
+     328 |     cout << endl;
+     329 |     
+     330 |     cout << "=== Iterator Demo ===" << endl;
+     331 |     cout << "Using iterator:" << endl;
+     332 |     for (auto it = iht.begin(); it != iht.end(); ++it) {
+     333 |         cout << it->key << " -> " << it->value << endl;
+     334 |     }
+     335 |     
+     336 |     cout << "\nUsing const iterator:" << endl;
+     337 |     for (auto it = iht.cbegin(); it != iht.cend(); ++it) {
+     338 |         cout << it->key << " -> " << it->value << endl;
+     339 |     }
+     340 |     
+     341 |     cout << "\n=== Range-based for loop ===" << endl;
+     342 |     printHashTable(iht);
+     343 |     
+     344 |     cout << "\n=== STL Algorithm Compatibility ===" << endl;
+     345 |     cout << "Max value: " << findMaxValue(iht) << endl;
+     346 |     
+>>>  347 |     cout << "Count of entries with value > 3: " << 
+     348 |         count_if(iht.begin(), iht.end(), 
+     349 |                 [](const auto& entry) { return entry.value > 3; }) << endl;
+     350 |     
+     351 |     cout << "All entries (using for_each):" << endl;
+     352 |     for_each(iht.begin(), iht.end(), 
+     353 |             [](const auto& entry) { 
+     354 |                 cout << entry.key << ":" << entry.value << " "; 
+     355 |             });
+     356 |     cout << endl;
+     357 |     
+     358 |     cout << "\n=== Find and Modify ===" << endl;
+     359 |     auto it = find_if(iht.begin(), iht.end(), 
+     360 |                     [](const auto& entry) { return entry.key == "banana"; });
+     361 |     
+     362 |     if (it != iht.end()) {
+     363 |         cout << "Found banana with value: " << it->value << endl;
+     364 |         // Note: Can't modify through const_iterator, but could through regular iterator
+     365 |     }
+     366 |     
+     367 |     return 0;
+     368 | }
+--- End Source ---
+
+========================================================================
+
+[PASS] tests\heap.sa
+
+[PASS] tests\huffman_tree.sa
+
+[PASS] tests\hyperloglog.sa
+
+[FAIL] tests\input sanitizer.sa
+------------------------------------------------------------------------
+Error  : ParseError: Unexpected token: '.'
+Line   : 6   Col : 5
+
+--- Source Code (tests\input sanitizer.sa) ---
+       1 | // Simple Input Sanitizer
+       2 | function sanitizeString(input) {
+       3 |   return input
+       4 |     .trim()
+       5 |     .replace(/[<>]/g, '') // Remove HTML tags
+>>>    6 |     .replace(/javascript:/gi, '') // Remove javascript protocol
+       7 |     .replace(/on\w+=/gi, ''); // Remove event handlers
+       8 | }
+       9 | 
+      10 | function sanitizeHTML(input) {
+      11 |   const div = document.createElement('div');
+      12 |   div.textContent = input;
+      13 |   return div.innerHTML;
+      14 | }
+      15 | 
+      16 | function sanitizeNumber(input) {
+      17 |   const clean = input.replace(/[^0-9.-]/g, '');
+      18 |   return parseFloat(clean) || 0;
+      19 | }
+      20 | 
+      21 | function sanitizeEmail(input) {
+      22 |   return input.toLowerCase().trim().replace(/[^a-z0-9@._-]/g, '');
+      23 | }
+      24 | 
+      25 | function sanitizePhone(input) {
+      26 |   return input.replace(/\D/g, ''); // Keep only digits
+      27 | }
+      28 | 
+      29 | function sanitizeURL(input) {
+      30 |   // Basic URL sanitization
+      31 |   if (!input.startsWith('http://') && !input.startsWith('https://')) {
+      32 |     return 'https://' + input;
+      33 |   }
+      34 |   return input;
+      35 | }
+      36 | 
+      37 | function sanitizeFilename(input) {
+      38 |   return input
+      39 |     .trim()
+      40 |     .replace(/[<>:"/\\|?*]/g, '') // Remove invalid filename characters
+      41 |     .substring(0, 255); // Limit length
+      42 | }
+      43 | 
+      44 | // Usage examples
+      45 | const inputs = [
+      46 |   '<script>alert("xss")</script>',
+      47 |   'javascript:alert("hack")',
+      48 |   '  Hello World  ',
+      49 |   'abc123def',
+      50 |   'user@example.com',
+      51 |   '(123) 456-7890',
+      52 |   'google.com',
+      53 |   'invalid/file:name.txt'
+      54 | ];
+      55 | 
+      56 | console.log('String sanitization:');
+      57 | console.log(sanitizeString(inputs[0]));
+      58 | console.log(sanitizeString(inputs[1]));
+      59 | console.log(sanitizeString(inputs[2]));
+      60 | 
+      61 | console.log('\nOther sanitizations:');
+      62 | console.log('Number:', sanitizeNumber(inputs[3]));
+      63 | console.log('Email:', sanitizeEmail(inputs[4]));
+      64 | console.log('Phone:', sanitizePhone(inputs[5]));
+      65 | console.log('URL:', sanitizeURL(inputs[6]));
+      66 | console.log('Filename:', sanitizeFilename(inputs[7]));
+      67 | 
+      68 | console.log('\nInput sanitizer ready!');
+--- End Source ---
+
+========================================================================
+
+[PASS] tests\interval_tree.sa
+
+[FAIL] tests\k_d_tree.sa
+------------------------------------------------------------------------
+Error  : ParseError: Expected ':' (got '\n')
+Line   : 131   Col : 22
+
+--- Source Code (tests\k_d_tree.sa) ---
+       1 | // K-D Tree Implementation in C++
+       2 | #include <iostream>
+       3 | #include <vector>
+       4 | #include <algorithm>
+       5 | using namespace std;
+       6 | 
+       7 | struct Point {
+       8 |     vector<int> coords;
+       9 |     
+      10 |     Point(vector<int> c) : coords(c) {}
+      11 |     
+      12 |     int& operator[](int index) {
+      13 |         return coords[index];
+      14 |     }
+      15 |     
+      16 |     const int& operator[](int index) const {
+      17 |         return coords[index];
+      18 |     }
+      19 | };
+      20 | 
+      21 | struct KDNode {
+      22 |     Point point;
+      23 |     KDNode* left;
+      24 |     KDNode* right;
+      25 |     
+      26 |     KDNode(Point p) : point(p), left(nullptr), right(nullptr) {}
+      27 |     
+      28 |     ~KDNode() {
+      29 |         delete left;
+      30 |         delete right;
+      31 |     }
+      32 | };
+      33 | 
+      34 | class KDTree {
+      35 | private:
+      36 |     KDNode* root;
+      37 |     int k;
+      38 | 
+      39 |     KDNode* buildTree(vector<Point>& points, int depth) {
+      40 |         if (points.empty()) {
+      41 |             return nullptr;
+      42 |         }
+      43 |         
+      44 |         int axis = depth % k;
+      45 |         
+      46 |         sort(points.begin(), points.end(), [axis](const Point& a, const Point& b) {
+      47 |             return a[axis] < b[axis];
+      48 |         });
+      49 |         
+      50 |         int median = points.size() / 2;
+      51 |         KDNode* node = new KDNode(points[median]);
+      52 |         
+      53 |         vector<Point> leftPoints(points.begin(), points.begin() + median);
+      54 |         vector<Point> rightPoints(points.begin() + median + 1, points.end());
+      55 |         
+      56 |         node->left = buildTree(leftPoints, depth + 1);
+      57 |         node->right = buildTree(rightPoints, depth + 1);
+      58 |         
+      59 |         return node;
+      60 |     }
+      61 | 
+      62 |     bool searchHelper(KDNode* node, Point& target, int depth) {
+      63 |         if (!node) {
+      64 |             return false;
+      65 |         }
+      66 |         
+      67 |         bool match = true;
+      68 |         for (int i = 0; i < k; i++) {
+      69 |             if (node->point[i] != target[i]) {
+      70 |                 match = false;
+      71 |                 break;
+      72 |             }
+      73 |         }
+      74 |         
+      75 |         if (match) {
+      76 |             return true;
+      77 |         }
+      78 |         
+      79 |         int axis = depth % k;
+      80 |         KDNode* nextBranch = (target[axis] < node->point[axis]) ? node->left : node->right;
+      81 |         KDNode* otherBranch = (target[axis] < node->point[axis]) ? node->right : node->left;
+      82 |         
+      83 |         return searchHelper(nextBranch, target, depth + 1) || searchHelper(otherBranch, target, depth + 1);
+      84 |     }
+      85 | 
+      86 |     void inorder(KDNode* node) {
+      87 |         if (node) {
+      88 |             inorder(node->left);
+      89 |             cout << "(";
+      90 |             for (int i = 0; i < k; i++) {
+      91 |                 cout << node->point[i];
+      92 |                 if (i < k - 1) cout << ", ";
+      93 |             }
+      94 |             cout << ") ";
+      95 |             inorder(node->right);
+      96 |         }
+      97 |     }
+      98 | 
+      99 | public:
+     100 |     KDTree(int dimensions) : root(nullptr), k(dimensions) {}
+     101 | 
+     102 |     ~KDTree() {
+     103 |         delete root;
+     104 |     }
+     105 | 
+     106 |     void build(vector<Point>& points) {
+     107 |         delete root;
+     108 |         root = buildTree(points, 0);
+     109 |     }
+     110 | 
+     111 |     bool search(Point& target) {
+     112 |         return searchHelper(root, target, 0);
+     113 |     }
+     114 | 
+     115 |     void display() {
+     116 |         cout << "K-D Tree (k=" << k << "): ";
+     117 |         inorder(root);
+     118 |         cout << endl;
+     119 |     }
+     120 | };
+     121 | 
+     122 | int main() {
+     123 |     KDTree kdt(2);
+     124 |     
+     125 |     vector<Point> points = {
+     126 |         Point({2, 3}),
+     127 |         Point({5, 4}),
+     128 |         Point({9, 6}),
+     129 |         Point({4, 7}),
+     130 |         Point({8, 1}),
+>>>  131 |         Point({7, 2})
+     132 |     };
+     133 |     
+     134 |     kdt.build(points);
+     135 |     kdt.display();
+     136 |     
+     137 |     Point target1({5, 4});
+     138 |     Point target2({10, 10});
+     139 |     
+     140 |     cout << "Search (5,4): " << (kdt.search(target1) ? "Found" : "Not Found") << endl;
+     141 |     cout << "Search (10,10): " << (kdt.search(target2) ? "Found" : "Not Found") << endl;
+     142 |     
+     143 |     return 0;
+     144 | }
+--- End Source ---
+
+========================================================================
+
+[PASS] tests\kruskal.sa
+
+[PASS] tests\linear search.sa
+
+[PASS] tests\linear_probing.sa
+
+[PASS] tests\link_cut_tree.sa
+
+[PASS] tests\linked_list.sa
+
+[FAIL] tests\merge sort.sa
+------------------------------------------------------------------------
+Error  : IndexError: Array index out of range
+Line   : 45
+
+--- Program Output ---
+  Original array: [12, 11, 13, 5, 6, 7, 2, 9, 15, 1, 8]
+--- End Output ---
+
+--- Source Code (tests\merge sort.sa) ---
+       1 | # merge_sort.sa - Merge Sort Algorithm Implementation
+       2 | # C-style merge sort implementation in Quantum Language
+       3 | 
+       4 | function merge(arr, left, mid, right) {
+       5 |     let n1 = mid - left + 1;
+       6 |     let n2 = right - mid;
+       7 |     
+       8 |     # Create temporary arrays
+       9 |     let L = [];
+      10 |     let R = [];
+      11 |     
+      12 |     # Copy data to temporary arrays
+      13 |     for (let i = 0; i < n1; i++) {
+      14 |         L.push(arr[left + i]);
+      15 |     }
+      16 |     for (let j = 0; j < n2; j++) {
+      17 |         R.push(arr[mid + 1 + j]);
+      18 |     }
+      19 |     
+      20 |     # Merge the temporary arrays back into arr[left..right]
+      21 |     let i = 0;  # Initial index of first subarray
+      22 |     let j = 0;  # Initial index of second subarray
+      23 |     let k = left;  # Initial index of merged subarray
+      24 |     
+      25 |     while (i < n1 && j < n2) {
+      26 |         if (L[i] <= R[j]) {
+      27 |             arr[k] = L[i];
+      28 |             i++;
+      29 |         } else {
+      30 |             arr[k] = R[j];
+      31 |             j++;
+      32 |         }
+      33 |         k++;
+      34 |     }
+      35 |     
+      36 |     # Copy remaining elements of L[] if any
+      37 |     while (i < n1) {
+      38 |         arr[k] = L[i];
+      39 |         i++;
+      40 |         k++;
+      41 |     }
+      42 |     
+      43 |     # Copy remaining elements of R[] if any
+      44 |     while (j < n2) {
+>>>   45 |         arr[k] = R[j];
+      46 |         j++;
+      47 |         k++;
+      48 |     }
+      49 | }
+      50 | 
+      51 | function merge_sort(arr, left, right) {
+      52 |     if (left < right) {
+      53 |         # Same as (left+right)/2, but avoids overflow for large left and right
+      54 |         let mid = left + (right - left) / 2;
+      55 |         
+      56 |         # Sort first and second halves
+      57 |         merge_sort(arr, left, mid);
+      58 |         merge_sort(arr, mid + 1, right);
+      59 |         
+      60 |         merge(arr, left, mid, right);
+      61 |     }
+      62 | }
+      63 | 
+      64 | function merge_sort_wrapper(arr) {
+      65 |     merge_sort(arr, 0, len(arr) - 1);
+      66 |     return arr;
+      67 | }
+      68 | 
+      69 | # Test the merge sort implementation
+      70 | let test_array = [12, 11, 13, 5, 6, 7, 2, 9, 15, 1, 8];
+      71 | print("Original array:", test_array);
+      72 | 
+      73 | let sorted_array = merge_sort_wrapper(test_array.copy());
+      74 | print("Sorted array:", sorted_array);
+      75 | 
+      76 | # Test with empty array
+      77 | let empty_array = [];
+      78 | print("Empty array:", empty_array);
+      79 | print("After merge sort:", merge_sort_wrapper(empty_array.copy()));
+      80 | 
+      81 | # Test with single element
+      82 | let single_element = [42];
+      83 | print("Single element:", single_element);
+      84 | print("After merge sort:", merge_sort_wrapper(single_element.copy()));
+      85 | 
+      86 | # Test with negative numbers
+      87 | let negative_numbers = [-3, -1, -7, -4, -2, -6, -5];
+      88 | print("Negative numbers:", negative_numbers);
+      89 | print("After merge sort:", merge_sort_wrapper(negative_numbers.copy()));
+      90 | 
+      91 | # Performance test with larger array
+      92 | let large_array = [];
+      93 | for (let i = 100; i >= 1; i--) {
+      94 |     large_array.push(i);
+      95 | }
+      96 | print("Large array (first 10):", large_array.slice(0, 10));
+      97 | let sorted_large = merge_sort_wrapper(large_array.copy());
+      98 | print("Sorted large array (first 10):", sorted_large.slice(0, 10));
+--- End Source ---
+
+========================================================================
+
+[PASS] tests\minesweeper.sa
+
+[PASS] tests\minimum_cut.sa
+
+[PASS] tests\order_statistic_tree.sa
+
+[FAIL] tests\password_generator.sa
+------------------------------------------------------------------------
+Error  : ParseError: Expected module name to import (got 'string')
+Line   : 5   Col : 8
+
+--- Source Code (tests\password_generator.sa) ---
+       1 | # Password Generator
+       2 | # Generate secure random passwords
+       3 | 
+       4 | import random
+>>>    5 | import string
+       6 | 
+       7 | def generate_password(length=12, use_upper=True, use_lower=True, use_digits=True, use_symbols=True):
+       8 |     characters = ""
+       9 |     
+      10 |     if use_upper:
+      11 |         characters += string.ascii_uppercase
+      12 |     if use_lower:
+      13 |         characters += string.ascii_lowercase
+      14 |     if use_digits:
+      15 |         characters += string.digits
+      16 |     if use_symbols:
+      17 |         characters += "!@#$%^&*()_+-=[]{}|;:,.<>?"
+      18 |     
+      19 |     if not characters:
+      20 |         return "No character types selected"
+      21 |     
+      22 |     password = ''.join(random.choice(characters) for _ in range(length))
+      23 |     return password
+      24 | 
+      25 | def check_password_strength(password):
+      26 |     score = 0
+      27 |     feedback = []
+      28 |     
+      29 |     if len(password) >= 8:
+      30 |         score += 1
+      31 |     else:
+      32 |         feedback.append("Password should be at least 8 characters long")
+      33 |     
+      34 |     if any(c.isupper() for c in password):
+      35 |         score += 1
+      36 |     else:
+      37 |         feedback.append("Add uppercase letters")
+      38 |     
+      39 |     if any(c.islower() for c in password):
+      40 |         score += 1
+      41 |     else:
+      42 |         feedback.append("Add lowercase letters")
+      43 |     
+      44 |     if any(c.isdigit() for c in password):
+      45 |         score += 1
+      46 |     else:
+      47 |         feedback.append("Add numbers")
+      48 |     
+      49 |     if any(c in "!@#$%^&*()_+-=[]{}|;:,.<>?" for c in password):
+      50 |         score += 1
+      51 |     else:
+      52 |         feedback.append("Add special characters")
+      53 |     
+      54 |     strength_levels = ["Very Weak", "Weak", "Fair", "Good", "Strong", "Very Strong"]
+      55 |     strength = strength_levels[min(score, 5)]
+      56 |     
+      57 |     return strength, feedback
+      58 | 
+      59 | def password_generator():
+      60 |     print("Password Generator")
+      61 |     print("=" * 20)
+      62 |     
+      63 |     while True:
+      64 |         print("\nOptions:")
+      65 |         print("1. Generate password")
+      66 |         print("2. Check password strength")
+      67 |         print("3. Generate multiple passwords")
+      68 |         print("4. Exit")
+      69 |         
+      70 |         choice = input("Enter your choice (1-4): ")
+      71 |         
+      72 |         if choice == '1':
+      73 |             try:
+      74 |                 length = int(input("Enter password length (8-32): "))
+      75 |                 length = max(8, min(32, length))
+      76 |             except ValueError:
+      77 |                 length = 12
+      78 |             
+      79 |             use_upper = input("Include uppercase letters? (y/n): ").lower() == 'y'
+      80 |             use_lower = input("Include lowercase letters? (y/n): ").lower() == 'y'
+      81 |             use_digits = input("Include digits? (y/n): ").lower() == 'y'
+      82 |             use_symbols = input("Include symbols? (y/n): ").lower() == 'y'
+      83 |             
+      84 |             password = generate_password(length, use_upper, use_lower, use_digits, use_symbols)
+      85 |             print(f"\nGenerated Password: {password}")
+      86 |             
+      87 |             strength, feedback = check_password_strength(password)
+      88 |             print(f"Strength: {strength}")
+      89 |             if feedback:
+      90 |                 print("Suggestions:", ", ".join(feedback))
+      91 |         
+      92 |         elif choice == '2':
+      93 |             password = input("Enter password to check: ")
+      94 |             if password:
+      95 |                 strength, feedback = check_password_strength(password)
+      96 |                 print(f"Password Strength: {strength}")
+      97 |                 if feedback:
+      98 |                     print("Improvement suggestions:")
+      99 |                     for suggestion in feedback:
+     100 |                         print(f"- {suggestion}")
+     101 |             else:
+     102 |                 print("Please enter a password")
+     103 |         
+     104 |         elif choice == '3':
+     105 |             try:
+     106 |                 count = int(input("How many passwords to generate? "))
+     107 |                 count = max(1, min(10, count))
+     108 |                 length = int(input("Enter password length (8-32): "))
+     109 |                 length = max(8, min(32, length))
+     110 |             except ValueError:
+     111 |                 count = 5
+     112 |                 length = 12
+     113 |             
+     114 |             print(f"\nGenerating {count} passwords:")
+     115 |             for i in range(count):
+     116 |                 password = generate_password(length)
+     117 |                 strength, _ = check_password_strength(password)
+     118 |                 print(f"{i+1}. {password} ({strength})")
+     119 |         
+     120 |         elif choice == '4':
+     121 |             print("Goodbye!")
+     122 |             break
+     123 |         
+     124 |         else:
+     125 |             print("Invalid choice. Please try again.")
+     126 | 
+     127 | # Run the password generator
+     128 | password_generator()
+--- End Source ---
+
+========================================================================
+
+[PASS] tests\perfect_hashing.sa
+
+[PASS] tests\persistent_hash.sa
+
+[PASS] tests\prim.sa
+
+[PASS] tests\quadratic_probing.sa
+
+[FAIL] tests\red_black_tree.sa
+------------------------------------------------------------------------
+Error  : ParseError: Unexpected token: ';'
+Line   : 5   Col : 26
+
+--- Source Code (tests\red_black_tree.sa) ---
+       1 | // Red-Black Tree Implementation in C++
+       2 | #include <iostream>
+       3 | using namespace std;
+       4 | 
+>>>    5 | enum Color { RED, BLACK };
+       6 | 
+       7 | struct RBNode {
+       8 |     int data;
+       9 |     bool color;
+      10 |     RBNode* left;
+      11 |     RBNode* right;
+      12 |     RBNode* parent;
+      13 |     
+      14 |     RBNode(int val) : data(val), color(RED), left(nullptr), right(nullptr), parent(nullptr) {}
+      15 | };
+      16 | 
+      17 | class RedBlackTree {
+      18 | private:
+      19 |     RBNode* root;
+      20 |     RBNode* NIL;
+      21 | 
+      22 |     void leftRotate(RBNode* x) {
+      23 |         RBNode* y = x->right;
+      24 |         x->right = y->left;
+      25 |         if (y->left != NIL) {
+      26 |             y->left->parent = x;
+      27 |         }
+      28 |         y->parent = x->parent;
+      29 |         if (x->parent == nullptr) {
+      30 |             root = y;
+      31 |         } else if (x == x->parent->left) {
+      32 |             x->parent->left = y;
+      33 |         } else {
+      34 |             x->parent->right = y;
+      35 |         }
+      36 |         y->left = x;
+      37 |         x->parent = y;
+      38 |     }
+      39 | 
+      40 |     void rightRotate(RBNode* y) {
+      41 |         RBNode* x = y->left;
+      42 |         y->left = x->right;
+      43 |         if (x->right != NIL) {
+      44 |             x->right->parent = y;
+      45 |         }
+      46 |         x->parent = y->parent;
+      47 |         if (y->parent == nullptr) {
+      48 |             root = x;
+      49 |         } else if (y == y->parent->right) {
+      50 |             y->parent->right = x;
+      51 |         } else {
+      52 |             y->parent->left = x;
+      53 |         }
+      54 |         x->right = y;
+      55 |         y->parent = x;
+      56 |     }
+      57 | 
+      58 |     void insertFixup(RBNode* z) {
+      59 |         while (z->parent != nullptr && z->parent->color == RED) {
+      60 |             if (z->parent == z->parent->parent->left) {
+      61 |                 RBNode* y = z->parent->parent->right;
+      62 |                 if (y != nullptr && y->color == RED) {
+      63 |                     z->parent->color = BLACK;
+      64 |                     y->color = BLACK;
+      65 |                     z->parent->parent->color = RED;
+      66 |                     z = z->parent->parent;
+      67 |                 } else {
+      68 |                     if (z == z->parent->right) {
+      69 |                         z = z->parent;
+      70 |                         leftRotate(z);
+      71 |                     }
+      72 |                     z->parent->color = BLACK;
+      73 |                     z->parent->parent->color = RED;
+      74 |                     rightRotate(z->parent->parent);
+      75 |                 }
+      76 |             } else {
+      77 |                 RBNode* y = z->parent->parent->left;
+      78 |                 if (y != nullptr && y->color == RED) {
+      79 |                     z->parent->color = BLACK;
+      80 |                     y->color = BLACK;
+      81 |                     z->parent->parent->color = RED;
+      82 |                     z = z->parent->parent;
+      83 |                 } else {
+      84 |                     if (z == z->parent->left) {
+      85 |                         z = z->parent;
+      86 |                         rightRotate(z);
+      87 |                     }
+      88 |                     z->parent->color = BLACK;
+      89 |                     z->parent->parent->color = RED;
+      90 |                     leftRotate(z->parent->parent);
+      91 |                 }
+      92 |             }
+      93 |         }
+      94 |         root->color = BLACK;
+      95 |     }
+      96 | 
+      97 |     void inorder(RBNode* node) {
+      98 |         if (node != nullptr && node != NIL) {
+      99 |             inorder(node->left);
+     100 |             cout << node->data << "(" << (node->color == RED ? "R" : "B") << ") ";
+     101 |             inorder(node->right);
+     102 |         }
+     103 |     }
+     104 | 
+     105 |     void destroyTree(RBNode* node) {
+     106 |         if (node != nullptr && node != NIL) {
+     107 |             destroyTree(node->left);
+     108 |             destroyTree(node->right);
+     109 |             delete node;
+     110 |         }
+     111 |     }
+     112 | 
+     113 | public:
+     114 |     RedBlackTree() {
+     115 |         NIL = new RBNode(0);
+     116 |         NIL->color = BLACK;
+     117 |         root = nullptr;
+     118 |     }
+     119 | 
+     120 |     ~RedBlackTree() {
+     121 |         destroyTree(root);
+     122 |         delete NIL;
+     123 |     }
+     124 | 
+     125 |     void insert(int value) {
+     126 |         RBNode* z = new RBNode(value);
+     127 |         RBNode* y = nullptr;
+     128 |         RBNode* x = root;
+     129 | 
+     130 |         while (x != nullptr && x != NIL) {
+     131 |             y = x;
+     132 |             if (z->data < x->data) {
+     133 |                 x = x->left;
+     134 |             } else {
+     135 |                 x = x->right;
+     136 |             }
+     137 |         }
+     138 | 
+     139 |         z->parent = y;
+     140 |         if (y == nullptr) {
+     141 |             root = z;
+     142 |         } else if (z->data < y->data) {
+     143 |             y->left = z;
+     144 |         } else {
+     145 |             y->right = z;
+     146 |         }
+     147 | 
+     148 |         z->left = NIL;
+     149 |         z->right = NIL;
+     150 |         insertFixup(z);
+     151 |     }
+     152 | 
+     153 |     void display() {
+     154 |         cout << "Red-Black Tree: ";
+     155 |         inorder(root);
+     156 |         cout << endl;
+     157 |     }
+     158 | };
+     159 | 
+     160 | int main() {
+     161 |     RedBlackTree rbt;
+     162 |     rbt.insert(10);
+     163 |     rbt.insert(20);
+     164 |     rbt.insert(30);
+     165 |     rbt.insert(15);
+     166 |     rbt.insert(25);
+     167 |     rbt.insert(5);
+     168 |     
+     169 |     rbt.display();
+     170 |     
+     171 |     return 0;
+     172 | }
+--- End Source ---
+
+========================================================================
+
+[PASS] tests\robin_hood_hashing.sa
+
+[PASS] tests\rope.sa
+
+[FAIL] tests\rope_string.sa
+------------------------------------------------------------------------
+Error  : ParseError: Unexpected token: '\n'
+Line   : 62   Col : 90
+
+--- Source Code (tests\rope_string.sa) ---
+       1 | // Rope String Implementation in C++
+       2 | #include <iostream>
+       3 | #include <string>
+       4 | using namespace std;
+       5 | 
+       6 | struct RopeNode {
+       7 |     string data;
+       8 |     int length;
+       9 |     RopeNode* left;
+      10 |     RopeNode* right;
+      11 |     
+      12 |     RopeNode(const string& str) : data(str), length(str.length()), left(nullptr), right(nullptr) {}
+      13 |     
+      14 |     RopeNode(RopeNode* l, RopeNode* r) : data(""), length(0), left(l), right(r) {
+      15 |         if (left) length += left->length;
+      16 |         if (right) length += right->length;
+      17 |     }
+      18 |     
+      19 |     ~RopeNode() {
+      20 |         delete left;
+      21 |         delete right;
+      22 |     }
+      23 | };
+      24 | 
+      25 | class RopeString {
+      26 | private:
+      27 |     RopeNode* root;
+      28 | 
+      29 |     char getChar(RopeNode* node, int index) {
+      30 |         if (!node) return '\0';
+      31 |         
+      32 |         if (node->left) {
+      33 |             if (index < node->left->length) {
+      34 |                 return getChar(node->left, index);
+      35 |             }
+      36 |             index -= node->left->length;
+      37 |         }
+      38 |         
+      39 |         if (node->right && index >= node->data.length()) {
+      40 |             return getChar(node->right, index - node->data.length());
+      41 |         }
+      42 |         
+      43 |         if (index < node->data.length()) {
+      44 |             return node->data[index];
+      45 |         }
+      46 |         
+      47 |         return '\0';
+      48 |     }
+      49 | 
+      50 |     RopeNode* concat(RopeNode* left, RopeNode* right) {
+      51 |         return new RopeNode(left, right);
+      52 |     }
+      53 | 
+      54 |     pair<RopeNode*, RopeNode*> split(RopeNode* node, int index) {
+      55 |         if (!node) {
+      56 |             return {nullptr, nullptr};
+      57 |         }
+      58 |         
+      59 |         if (node->left && index <= node->left->length) {
+      60 |             auto splitResult = split(node->left, index);
+      61 |             node->left = splitResult.second;
+>>>   62 |             node->length = (node->left ? node->left->length : 0) + node->data.length() + 
+      63 |                           (node->right ? node->right->length : 0);
+      64 |             return {splitResult.first, node};
+      65 |         }
+      66 |         
+      67 |         if (node->left && index > node->left->length + node->data.length()) {
+      68 |             auto splitResult = split(node->right, index - node->left->length - node->data.length());
+      69 |             node->right = splitResult.first;
+      70 |             node->length = (node->left ? node->left->length : 0) + node->data.length() + 
+      71 |                           (node->right ? node->right->length : 0);
+      72 |             return {node, splitResult.second};
+      73 |         }
+      74 |         
+      75 |         string leftPart = node->data.substr(0, index - (node->left ? node->left->length : 0));
+      76 |         string rightPart = node->data.substr(index - (node->left ? node->left->length : 0));
+      77 |         
+      78 |         RopeNode* leftNode = new RopeNode(leftPart);
+      79 |         leftNode->left = node->left;
+      80 |         leftNode->length = (leftNode->left ? leftNode->left->length : 0) + leftPart.length();
+      81 |         
+      82 |         RopeNode* rightNode = new RopeNode(rightPart);
+      83 |         rightNode->right = node->right;
+      84 |         rightNode->length = rightPart.length() + (rightNode->right ? rightNode->right->length : 0);
+      85 |         
+      86 |         node->left = node->right = nullptr;
+      87 |         delete node;
+      88 |         
+      89 |         return {leftNode, rightNode};
+      90 |     }
+      91 | 
+      92 | public:
+      93 |     RopeString() : root(nullptr) {}
+      94 |     
+      95 |     RopeString(const string& str) {
+      96 |         root = new RopeNode(str);
+      97 |     }
+      98 |     
+      99 |     RopeString(RopeNode* node) : root(node) {}
+     100 |     
+     101 |     ~RopeString() {
+     102 |         delete root;
+     103 |     }
+     104 | 
+     105 |     char operator[](int index) {
+     106 |         return getChar(root, index);
+     107 |     }
+     108 | 
+     109 |     int length() {
+     110 |         return root ? root->length : 0;
+     111 |     }
+     112 | 
+     113 |     RopeString concat(const RopeString& other) {
+     114 |         return RopeString(concat(root, other.root));
+     115 |     }
+     116 | 
+     117 |     pair<RopeString, RopeString> split(int index) {
+     118 |         auto splitResult = split(root, index);
+     119 |         return {RopeString(splitResult.first), RopeString(splitResult.second)};
+     120 |     }
+     121 | 
+     122 |     string toString() {
+     123 |         string result;
+     124 |         for (int i = 0; i < length(); i++) {
+     125 |             result += (*this)[i];
+     126 |         }
+     127 |         return result;
+     128 |     }
+     129 | 
+     130 |     void display() {
+     131 |         cout << "Rope String: \"" << toString() << "\" (length=" << length() << ")" << endl;
+     132 |     }
+     133 | };
+     134 | 
+     135 | int main() {
+     136 |     RopeString rope1("Hello");
+     137 |     RopeString rope2(" World");
+     138 |     RopeString rope3("!");
+     139 |     
+     140 |     rope1.display();
+     141 |     rope2.display();
+     142 |     rope3.display();
+     143 |     
+     144 |     RopeString combined = rope1.concat(rope2).concat(rope3);
+     145 |     combined.display();
+     146 |     
+     147 |     cout << "Character at index 4: " << combined[4] << endl;
+     148 |     cout << "Character at index 7: " << combined[7] << endl;
+     149 |     
+     150 |     auto splitResult = combined.split(5);
+     151 |     cout << "Split at index 5:" << endl;
+     152 |     splitResult.first.display();
+     153 |     splitResult.second.display();
+     154 |     
+     155 |     return 0;
+     156 | }
+--- End Source ---
+
+========================================================================
+
+[FAIL] tests\segment_tree.sa
+------------------------------------------------------------------------
+Error  : ParseError: Expected ')' (got '<')
+Line   : 54   Col : 29
+
+--- Source Code (tests\segment_tree.sa) ---
+       1 | // Segment Tree Implementation in C++
+       2 | #include <iostream>
+       3 | #include <vector>
+       4 | #include <algorithm>
+       5 | using namespace std;
+       6 | 
+       7 | class SegmentTree {
+       8 | private:
+       9 |     vector<int> tree;
+      10 |     vector<int> arr;
+      11 |     int n;
+      12 | 
+      13 |     void build(int start, int end, int node) {
+      14 |         if (start == end) {
+      15 |             tree[node] = arr[start];
+      16 |         } else {
+      17 |             int mid = (start + end) / 2;
+      18 |             build(start, mid, 2 * node + 1);
+      19 |             build(mid + 1, end, 2 * node + 2);
+      20 |             tree[node] = min(tree[2 * node + 1], tree[2 * node + 2]);
+      21 |         }
+      22 |     }
+      23 | 
+      24 |     int query(int start, int end, int l, int r, int node) {
+      25 |         if (r < start || end < l) {
+      26 |             return INT_MAX;
+      27 |         }
+      28 |         
+      29 |         if (l <= start && end <= r) {
+      30 |             return tree[node];
+      31 |         }
+      32 |         
+      33 |         int mid = (start + end) / 2;
+      34 |         return min(query(start, mid, l, r, 2 * node + 1),
+      35 |                    query(mid + 1, end, l, r, 2 * node + 2));
+      36 |     }
+      37 | 
+      38 |     void update(int start, int end, int idx, int val, int node) {
+      39 |         if (start == end) {
+      40 |             arr[idx] = val;
+      41 |             tree[node] = val;
+      42 |         } else {
+      43 |             int mid = (start + end) / 2;
+      44 |             if (idx <= mid) {
+      45 |                 update(start, mid, idx, val, 2 * node + 1);
+      46 |             } else {
+      47 |                 update(mid + 1, end, idx, val, 2 * node + 2);
+      48 |             }
+      49 |             tree[node] = min(tree[2 * node + 1], tree[2 * node + 2]);
+      50 |         }
+      51 |     }
+      52 | 
+      53 | public:
+>>>   54 |     SegmentTree(const vector<int>& input) {
+      55 |         arr = input;
+      56 |         n = arr.size();
+      57 |         tree.resize(4 * n);
+      58 |         build(0, n - 1, 0);
+      59 |     }
+      60 | 
+      61 |     int query(int l, int r) {
+      62 |         return query(0, n - 1, l, r, 0);
+      63 |     }
+      64 | 
+      65 |     void update(int idx, int val) {
+      66 |         update(0, n - 1, idx, val, 0);
+      67 |     }
+      68 | 
+      69 |     void display() {
+      70 |         cout << "Segment Tree: ";
+      71 |         for (int i = 0; i < tree.size(); i++) {
+      72 |             if (tree[i] != INT_MAX) {
+      73 |                 cout << tree[i] << " ";
+      74 |             }
+      75 |         }
+      76 |         cout << endl;
+      77 |     }
+      78 | };
+      79 | 
+      80 | int main() {
+      81 |     vector<int> arr = {1, 3, 2, 7, 9, 11};
+      82 |     SegmentTree st(arr);
+      83 |     
+      84 |     st.display();
+      85 |     
+      86 |     cout << "Minimum in range [1, 4]: " << st.query(1, 4) << endl;
+      87 |     cout << "Minimum in range [0, 5]: " << st.query(0, 5) << endl;
+      88 |     cout << "Minimum in range [2, 3]: " << st.query(2, 3) << endl;
+      89 |     
+      90 |     st.update(2, 0);
+      91 |     cout << "After updating index 2 to 0:" << endl;
+      92 |     cout << "Minimum in range [1, 4]: " << st.query(1, 4) << endl;
+      93 |     
+      94 |     return 0;
+      95 | }
+--- End Source ---
+
+========================================================================
+
+[PASS] tests\self_adjusting_list.sa
+
+[PASS] tests\skip_list.sa
+
+[PASS] tests\splay_tree.sa
+
+[PASS] tests\string repeating function.sa
+
+[PASS] tests\strongly_connected.sa
+
+[PASS] tests\suffix_tree.sa
+
+[FAIL] tests\text_analyzer.sa
+------------------------------------------------------------------------
+Error  : ParseError: Expected variable in for loop (got '(')
+Line   : 76   Col : 12
+
+--- Source Code (tests\text_analyzer.sa) ---
+       1 | # Text Analyzer
+       2 | # Analyze text for word count, readability, and statistics
+       3 | 
+       4 | def count_words(text):
+       5 |     words = text.split()
+       6 |     return len(words)
+       7 | 
+       8 | def count_characters(text, include_spaces=True):
+       9 |     if include_spaces:
+      10 |         return len(text)
+      11 |     else:
+      12 |         return len(text.replace(" ", ""))
+      13 | 
+      14 | def count_sentences(text):
+      15 |     sentences = text.split('.')
+      16 |     sentences = [s.strip() for s in sentences if s.strip()]
+      17 |     return len(sentences)
+      18 | 
+      19 | def count_paragraphs(text):
+      20 |     paragraphs = text.split('\n\n')
+      21 |     paragraphs = [p.strip() for p in paragraphs if p.strip()]
+      22 |     return len(paragraphs)
+      23 | 
+      24 | def find_most_common_words(text, top_n=10):
+      25 |     words = text.lower().split()
+      26 |     word_count = {}
+      27 |     
+      28 |     for word in words:
+      29 |         # Remove punctuation
+      30 |         clean_word = ''.join(c for c in word if c.isalnum())
+      31 |         if clean_word:
+      32 |             word_count[clean_word] = word_count.get(clean_word, 0) + 1
+      33 |     
+      34 |     # Sort by frequency
+      35 |     sorted_words = sorted(word_count.items(), key=lambda x: x[1], reverse=True)
+      36 |     return sorted_words[:top_n]
+      37 | 
+      38 | def calculate_reading_time(text, words_per_minute=200):
+      39 |     word_count = count_words(text)
+      40 |     minutes = word_count / words_per_minute
+      41 |     return round(minutes, 1)
+      42 | 
+      43 | def analyze_text(text):
+      44 |     print("Text Analysis Results")
+      45 |     print("=" * 25)
+      46 |     
+      47 |     # Basic counts
+      48 |     word_count = count_words(text)
+      49 |     char_count = count_characters(text)
+      50 |     char_no_spaces = count_characters(text, False)
+      51 |     sentence_count = count_sentences(text)
+      52 |     paragraph_count = count_paragraphs(text)
+      53 |     
+      54 |     print(f"Words: {word_count}")
+      55 |     print(f"Characters (with spaces): {char_count}")
+      56 |     print(f"Characters (no spaces): {char_no_spaces}")
+      57 |     print(f"Sentences: {sentence_count}")
+      58 |     print(f"Paragraphs: {paragraph_count}")
+      59 |     
+      60 |     # averages
+      61 |     if sentence_count > 0:
+      62 |         avg_words_per_sentence = word_count / sentence_count
+      63 |         print(f"Average words per sentence: {avg_words_per_sentence:.1f}")
+      64 |     
+      65 |     if paragraph_count > 0:
+      66 |         avg_words_per_paragraph = word_count / paragraph_count
+      67 |         print(f"Average words per paragraph: {avg_words_per_paragraph:.1f}")
+      68 |     
+      69 |     # Reading time
+      70 |     reading_time = calculate_reading_time(text)
+      71 |     print(f"Estimated reading time: {reading_time} minutes")
+      72 |     
+      73 |     # Most common words
+      74 |     print("\nMost Common Words:")
+      75 |     common_words = find_most_common_words(text)
+>>>   76 |     for i, (word, count) in enumerate(common_words, 1):
+      77 |         print(f"{i}. {word}: {count}")
+      78 | 
+      79 | def text_analyzer():
+      80 |     print("Text Analyzer")
+      81 |     print("=" * 15)
+      82 |     
+      83 |     while True:
+      84 |         print("\nOptions:")
+      85 |         print("1. Analyze text from input")
+      86 |         print("2. Analyze text from file")
+      87 |         print("3. Compare two texts")
+      88 |         print("4. Exit")
+      89 |         
+      90 |         choice = input("Enter your choice (1-4): ")
+      91 |         
+      92 |         if choice == '1':
+      93 |             print("Enter your text (press Enter twice to finish):")
+      94 |             lines = []
+      95 |             while True:
+      96 |                 line = input()
+      97 |                 if line == "" and len(lines) > 0 and lines[-1] == "":
+      98 |                     break
+      99 |                 lines.append(line)
+     100 |             
+     101 |             text = '\n'.join(lines[:-1])  # Remove last empty line
+     102 |             if text:
+     103 |                 analyze_text(text)
+     104 |             else:
+     105 |                 print("No text entered")
+     106 |         
+     107 |         elif choice == '2':
+     108 |             filename = input("Enter filename: ")
+     109 |             try:
+     110 |                 with open(filename, 'r') as file:
+     111 |                     text = file.read()
+     112 |                 analyze_text(text)
+     113 |             except FileNotFoundError:
+     114 |                 print(f"File '{filename}' not found")
+     115 |             except Exception as e:
+     116 |                 print(f"Error reading file: {e}")
+     117 |         
+     118 |         elif choice == '3':
+     119 |             print("Enter first text (press Enter twice to finish):")
+     120 |             lines1 = []
+     121 |             while True:
+     122 |                 line = input()
+     123 |                 if line == "" and len(lines1) > 0 and lines1[-1] == "":
+     124 |                     break
+     125 |                 lines1.append(line)
+     126 |             text1 = '\n'.join(lines1[:-1])
+     127 |             
+     128 |             print("\nEnter second text (press Enter twice to finish):")
+     129 |             lines2 = []
+     130 |             while True:
+     131 |                 line = input()
+     132 |                 if line == "" and len(lines2) > 0 and lines2[-1] == "":
+     133 |                     break
+     134 |                 lines2.append(line)
+     135 |             text2 = '\n'.join(lines2[:-1])
+     136 |             
+     137 |             if text1 and text2:
+     138 |                 print("\nText Comparison:")
+     139 |                 print("-" * 20)
+     140 |                 
+     141 |                 words1 = count_words(text1)
+     142 |                 words2 = count_words(text2)
+     143 |                 
+     144 |                 print(f"Text 1 - Words: {words1}")
+     145 |                 print(f"Text 2 - Words: {words2}")
+     146 |                 print(f"Difference: {abs(words1 - words2)} words")
+     147 |                 
+     148 |                 time1 = calculate_reading_time(text1)
+     149 |                 time2 = calculate_reading_time(text2)
+     150 |                 print(f"Text 1 - Reading time: {time1} minutes")
+     151 |                 print(f"Text 2 - Reading time: {time2} minutes")
+     152 |             else:
+     153 |                 print("Please enter both texts")
+     154 |         
+     155 |         elif choice == '4':
+     156 |             print("Goodbye!")
+     157 |             break
+     158 |         
+     159 |         else:
+     160 |             print("Invalid choice. Please try again.")
+     161 | 
+     162 | # Run the text analyzer
+     163 | text_analyzer()
+--- End Source ---
+
+========================================================================
+
+[PASS] tests\topological_sort.sa
+
+[PASS] tests\transitive_closure.sa
+
+[PASS] tests\treap.sa
+
+[PASS] tests\trie.sa
+
+[PASS] tests\universal_hashing.sa
+
+[PASS] tests\unrolled_linked_list.sa
+
+[FAIL] tests\url helper.sa
+------------------------------------------------------------------------
+Error  : ParseError: Expected variable name (got '[')
+Line   : 8   Col : 11
+
+--- Source Code (tests\url helper.sa) ---
+       1 | // Simple URL Helper
+       2 | function getQueryParams() {
+       3 |   const params = {};
+       4 |   const queryString = window.location.search.substring(1);
+       5 |   const pairs = queryString.split('&');
+       6 |   
+       7 |   for (const pair of pairs) {
+>>>    8 |     const [key, value] = pair.split('=');
+       9 |     params[decodeURIComponent(key)] = decodeURIComponent(value || '');
+      10 |   }
+      11 |   
+      12 |   return params;
+      13 | }
+      14 | 
+      15 | function buildURL(base, params) {
+      16 |   const url = new URL(base);
+      17 |   
+      18 |   Object.keys(params).forEach(key => {
+      19 |     url.searchParams.set(key, params[key]);
+      20 |   });
+      21 |   
+      22 |   return url.toString();
+      23 | }
+      24 | 
+      25 | function getURLSegment(index) {
+      26 |   const path = window.location.pathname;
+      27 |   const segments = path.split('/').filter(segment => segment);
+      28 |   return segments[index] || null;
+      29 | }
+      30 | 
+      31 | function isValidURL(string) {
+      32 |   try {
+      33 |     new URL(string);
+      34 |     return true;
+      35 |   } catch (_) {
+      36 |     return false;
+      37 |   }
+      38 | }
+      39 | 
+      40 | // Usage examples
+      41 | const params = getQueryParams();
+      42 | console.log('Query params:', params);
+      43 | 
+      44 | const newURL = buildURL('https://example.com/api', {
+      45 |   search: 'javascript',
+      46 |   page: 1,
+      47 |   limit: 10
+      48 | });
+      49 | 
+      50 | console.log('Built URL:', newURL);
+      51 | 
+      52 | const firstSegment = getURLSegment(0);
+      53 | console.log('First URL segment:', firstSegment);
+      54 | 
+      55 | console.log('Is valid URL:', isValidURL('https://google.com'));
+      56 | console.log('Is valid URL:', isValidURL('not-a-url'));
+      57 | 
+      58 | console.log('URL helper ready!');
+--- End Source ---
+
+========================================================================
+
+[PASS] tests\vector.sa
+
+[PASS] tests\xor_linked_list.sa
+
+========================================================================
+Result: FAILED 15/79 files
+Passed : 64   Failed : 15   Total : 79
