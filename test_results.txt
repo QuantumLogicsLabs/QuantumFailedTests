@@ -1,14 +1,229 @@
 Quantum Language — Test Results (in progress)
-Generated : 2026-07-13 00:09:02
+Generated : 2026-07-18 00:48:50
 Directory : C:\QuantumLogicsLabs\QuantumLanguage\compiler\tests
-Total     : 79   (running...)
+Total     : 21   (running...)
 ========================================================================
 
-[PASS] tests\Tower of Hanoi Algorithm.sa
+[FAIL] tests\04_functions.py
+------------------------------------------------------------------------
+Error  : ParseError: Expected parameter name
+Line   : 17   Col : 21
 
-[PASS] tests\User Configuration Manager.sa
+--- Source Code (tests\04_functions.py) ---
+       1 | """
+       2 | 04 - Functions
+       3 | Covers: defining functions, parameters, default args, *args/**kwargs, return values
+       4 | """
+       5 | 
+       6 | 
+       7 | def greet(name, greeting="Hello"):
+       8 |     """Return a greeting message."""
+       9 |     return f"{greeting}, {name}!"
+      10 | 
+      11 | 
+      12 | def add_all(*numbers):
+      13 |     """Sum an arbitrary number of arguments."""
+      14 |     return sum(numbers)
+      15 | 
+      16 | 
+>>>   17 | def describe_person(**details):
+      18 |     """Print key-value pairs passed as keyword arguments."""
+      19 |     for key, value in details.items():
+      20 |         print(f"{key}: {value}")
+      21 | 
+      22 | 
+      23 | def is_even(n):
+      24 |     return n % 2 == 0
+      25 | 
+      26 | 
+      27 | def factorial(n):
+      28 |     """Recursive factorial function."""
+      29 |     if n <= 1:
+      30 |         return 1
+      31 |     return n * factorial(n - 1)
+      32 | 
+      33 | 
+      34 | if __name__ == "__main__":
+      35 |     print(greet("Sara"))
+      36 |     print(greet("Sara", greeting="Hi"))
+      37 | 
+      38 |     print("Sum:", add_all(1, 2, 3, 4, 5))
+      39 | 
+      40 |     describe_person(name="Sara", age=30, city="Lahore")
+      41 | 
+      42 |     print("Is 7 even?", is_even(7))
+      43 |     print("Is 8 even?", is_even(8))
+      44 | 
+      45 |     print("5! =", factorial(5))
+--- End Source ---
 
-[PASS] tests\adjacency_matrix.sa
+========================================================================
+
+[FAIL] tests\09_file_handling.py
+------------------------------------------------------------------------
+Error  : ParseError: Unexpected token: 'as'
+Line   : 11   Col : 26
+
+--- Source Code (tests\09_file_handling.py) ---
+       1 | """
+       2 | 09 - File Handling
+       3 | Covers: reading/writing text files, context managers, appending, CSV-like parsing
+       4 | """
+       5 | 
+       6 | import os
+       7 | 
+       8 | filename = "sample_notes.txt"
+       9 | 
+      10 | # Writing to a file
+>>>   11 | with open(filename, "w") as f:
+      12 |     f.write("Line 1: Learning Python\n")
+      13 |     f.write("Line 2: File handling is useful\n")
+      14 |     f.write("Line 3: Practice makes perfect\n")
+      15 | 
+      16 | # Reading the whole file
+      17 | with open(filename, "r") as f:
+      18 |     content = f.read()
+      19 | print("Full file content:")
+      20 | print(content)
+      21 | 
+      22 | # Reading line by line
+      23 | with open(filename, "r") as f:
+      24 |     print("Line by line:")
+      25 |     for line_number, line in enumerate(f, start=1):
+      26 |         print(f"  {line_number}: {line.strip()}")
+      27 | 
+      28 | # Appending to a file
+      29 | with open(filename, "a") as f:
+      30 |     f.write("Line 4: Appended later\n")
+      31 | 
+      32 | with open(filename, "r") as f:
+      33 |     print("After appending:")
+      34 |     print(f.read())
+      35 | 
+      36 | # Simple CSV-style read/write (no external library)
+      37 | records = [("Ali", 85), ("Sara", 92), ("Zain", 78)]
+      38 | csv_filename = "students.csv"
+      39 | 
+      40 | with open(csv_filename, "w") as f:
+      41 |     f.write("name,score\n")
+      42 |     for student_name, score in records:
+      43 |         f.write(f"{student_name},{score}\n")
+      44 | 
+      45 | with open(csv_filename, "r") as f:
+      46 |     lines = f.read().splitlines()
+      47 |     header = lines[0].split(",")
+      48 |     print("CSV header:", header)
+      49 |     for row in lines[1:]:
+      50 |         parts = row.split(",")
+      51 |         print(f"  {parts[0]} -> {parts[1]}")
+      52 | 
+      53 | # Clean up generated files
+      54 | os.remove(filename)
+      55 | os.remove(csv_filename)
+--- End Source ---
+
+========================================================================
+
+[FAIL] tests\34_linked_list.cpp
+------------------------------------------------------------------------
+Error  : TypeError: Cannot dereference non-pointer
+Line   : 17
+
+--- Source Code (tests\34_linked_list.cpp) ---
+       1 | #include <iostream>
+       2 | using namespace std;
+       3 | 
+       4 | struct Node {
+       5 |     int data;
+       6 |     Node* next;
+       7 | };
+       8 | 
+       9 | class LinkedList {
+      10 |     Node* head;
+      11 | public:
+      12 |     LinkedList() { head = nullptr; }
+      13 |     void insert(int val) {
+      14 |         Node* newNode = new Node{val, nullptr};
+      15 |         if (!head) { head = newNode; return; }
+      16 |         Node* temp = head;
+>>>   17 |         while (temp->next) temp = temp->next;
+      18 |         temp->next = newNode;
+      19 |     }
+      20 |     void display() {
+      21 |         Node* temp = head;
+      22 |         while (temp) {
+      23 |             cout << temp->data << " -> ";
+      24 |             temp = temp->next;
+      25 |         }
+      26 |         cout << "NULL" << endl;
+      27 |     }
+      28 | };
+      29 | 
+      30 | int main() {
+      31 |     LinkedList list;
+      32 |     list.insert(10);
+      33 |     list.insert(20);
+      34 |     list.insert(30);
+      35 |     list.display();
+      36 |     return 0;
+      37 | }
+--- End Source ---
+
+========================================================================
+
+[FAIL] tests\35_file_write.cpp
+------------------------------------------------------------------------
+Error  : TypeError: Cannot call value of type nil
+Line   : 6
+
+--- Source Code (tests\35_file_write.cpp) ---
+       1 | #include <iostream>
+       2 | #include <fstream>
+       3 | using namespace std;
+       4 | 
+       5 | int main() {
+>>>    6 |     ofstream outFile("output.txt");
+       7 |     if (outFile.is_open()) {
+       8 |         outFile << "Hello, this is written to a file.\n";
+       9 |         outFile << "This is the second line.\n";
+      10 |         outFile.close();
+      11 |         cout << "Data written to file successfully." << endl;
+      12 |     } else {
+      13 |         cout << "Unable to open file" << endl;
+      14 |     }
+      15 |     return 0;
+      16 | }
+--- End Source ---
+
+========================================================================
+
+[FAIL] tests\36_file_read.cpp
+------------------------------------------------------------------------
+Error  : TypeError: Cannot call value of type nil
+Line   : 7
+
+--- Source Code (tests\36_file_read.cpp) ---
+       1 | #include <iostream>
+       2 | #include <fstream>
+       3 | #include <string>
+       4 | using namespace std;
+       5 | 
+       6 | int main() {
+>>>    7 |     ifstream inFile("output.txt");
+       8 |     string line;
+       9 |     if (inFile.is_open()) {
+      10 |         while (getline(inFile, line)) {
+      11 |             cout << line << endl;
+      12 |         }
+      13 |         inFile.close();
+      14 |     } else {
+      15 |         cout << "Unable to open file" << endl;
+      16 |     }
+      17 |     return 0;
+      18 | }
+--- End Source ---
+
+========================================================================
 
 [FAIL] tests\advanced.sa
 ------------------------------------------------------------------------
@@ -187,34 +402,6 @@ Line   : 27
 
 ========================================================================
 
-[PASS] tests\articulation_points.sa
-
-[PASS] tests\avl_tree.sa
-
-[PASS] tests\b_tree.sa
-
-[PASS] tests\bfs.sa
-
-[PASS] tests\binary_search_tree.sa
-
-[PASS] tests\binary_tree.sa
-
-[PASS] tests\block_array.sa
-
-[PASS] tests\bloom_filter.sa
-
-[PASS] tests\cartesian_tree.sa
-
-[PASS] tests\chunked_array.sa
-
-[PASS] tests\concurrent_hash.sa
-
-[PASS] tests\consistent_hashing.sa
-
-[PASS] tests\count_min_sketch.sa
-
-[PASS] tests\cuckoo_hashing.sa
-
 [FAIL] tests\date helper.sa
 ------------------------------------------------------------------------
 Error  : TypeError: Dict has no method 'toLocaleDateString'
@@ -278,17 +465,351 @@ Error  : TypeError: Dict has no method 'toLocaleDateString'
 
 ========================================================================
 
-[PASS] tests\dfs.sa
+[FAIL] tests\dungeon.sa
+------------------------------------------------------------------------
+Error  : ParseError: Expected ')' (got 'num_mon')
+Line   : 141   Col : 35
 
-[PASS] tests\double_hashing.sa
+--- Source Code (tests\dungeon.sa) ---
+       1 | /*
+       2 |  * ╔══════════════════════════════════════════╗
+       3 |  *     NUMBER DUNGEON  — Roguelike in C
+       4 |  *
+       5 |  *  Navigate a dungeon, fight monsters with
+       6 |  *  mental math, collect gold, find the exit!
+       7 |  *
+       8 |  *  WASD = move | Q = quit
+       9 |  *  Fight by walking into monsters.
+      10 |  *  Each fight: solve a math problem to deal
+      11 |  *  extra damage — or take full damage if wrong!
+      12 |  * ╚══════════════════════════════════════════╝
+      13 |  */
+      14 | 
+      15 | #include <stdio.h>
+      16 | #include <stdlib.h>
+      17 | #include <string.h>
+      18 | #include <time.h>
+      19 | 
+      20 | #ifdef _WIN32
+      21 |   #include <windows.h>
+      22 |   #define CLEAR "cls"
+      23 | #else
+      24 |   #define CLEAR "clear"
+      25 | #endif
+      26 | 
+      27 | #define ROWS  18
+      28 | #define COLS  40
+      29 | #define MAX_MONSTERS 12
+      30 | #define MAX_GOLD     10
+      31 | #define MAX_LOG       6
+      32 | 
+      33 | /* ── tile types ── */
+      34 | #define T_WALL  '#'
+      35 | #define T_FLOOR '.'
+      36 | #define T_EXIT  'E'
+      37 | 
+      38 | /* ── entity types ── */
+      39 | #define MON_GOBLIN  'g'
+      40 | #define MON_ORC     'O'
+      41 | #define MON_DRAGON  'D'
+      42 | #define GOLD_COIN   '$'
+      43 | 
+      44 | typedef struct {
+      45 |     int r, c;
+      46 |     char type;
+      47 |     int hp, max_hp, atk;
+      48 |     int alive;
+      49 | } Entity;
+      50 | 
+      51 | /* ── globals ── */
+      52 | char map[ROWS][COLS];
+      53 | Entity monsters[MAX_MONSTERS];
+      54 | int   mon_count;
+      55 | Entity gold_piles[MAX_GOLD];
+      56 | int   gold_count;
+      57 | 
+      58 | int   p_r, p_c;
+      59 | int   p_hp = 20, p_max_hp = 20;
+      60 | int   p_gold = 0;
+      61 | int   floor_num = 1;
+      62 | int   game_over = 0, won = 0;
+      63 | 
+      64 | char  log_lines[MAX_LOG][80];
+      65 | int   log_head = 0;
+      66 | 
+      67 | /* ── logging ── */
+      68 | void log_msg(const char *msg) {
+      69 |     strncpy(log_lines[log_head % MAX_LOG], msg, 79);
+      70 |     log_lines[log_head % MAX_LOG][79] = '\0';
+      71 |     log_head++;
+      72 | }
+      73 | 
+      74 | /* ── map generation (simple room + corridors) ── */
+      75 | void fill_map(void) {
+      76 |     for (int r=0;r<ROWS;r++) for (int c=0;c<COLS;c++) map[r][c]=T_WALL;
+      77 | }
+      78 | 
+      79 | void carve_rect(int r1,int c1,int r2,int c2) {
+      80 |     for (int r=r1;r<=r2;r++) for(int c=c1;c<=c2;c++) map[r][c]=T_FLOOR;
+      81 | }
+      82 | 
+      83 | void carve_hcorridor(int r,int c1,int c2) {
+      84 |     if (c1>c2){int t=c1;c1=c2;c2=t;}
+      85 |     for (int c=c1;c<=c2;c++) map[r][c]=T_FLOOR;
+      86 | }
+      87 | void carve_vcorridor(int c,int r1,int r2) {
+      88 |     if (r1>r2){int t=r1;r1=r2;r2=t;}
+      89 |     for (int r=r1;r<=r2;r++) map[r][c]=T_FLOOR;
+      90 | }
+      91 | 
+      92 | typedef struct { int r,c,w,h; } Room;
+      93 | #define MAX_ROOMS 6
+      94 | Room rooms[MAX_ROOMS];
+      95 | int  room_count;
+      96 | 
+      97 | void gen_map(void) {
+      98 |     fill_map();
+      99 |     room_count = 0;
+     100 |     int attempts = 0;
+     101 |     while (room_count < MAX_ROOMS && attempts < 200) {
+     102 |         attempts++;
+     103 |         int w = 4 + rand()%5, h = 3 + rand()%4;
+     104 |         int r = 1 + rand()%(ROWS-h-2);
+     105 |         int c = 1 + rand()%(COLS-w-2);
+     106 |         /* check overlap */
+     107 |         int ok=1;
+     108 |         for(int i=0;i<room_count;i++){
+     109 |             Room *rm=&rooms[i];
+     110 |             if (r<rm->r+rm->h+1 && r+h>rm->r-1 && c<rm->c+rm->w+1 && c+w>rm->c-1){ok=0;break;}
+     111 |         }
+     112 |         if (!ok) continue;
+     113 |         carve_rect(r, c, r+h-1, c+w-1);
+     114 |         rooms[room_count++] = (Room){r,c,w,h};
+     115 |     }
+     116 |     /* connect rooms */
+     117 |     for (int i=1;i<room_count;i++) {
+     118 |         int pr = rooms[i-1].r + rooms[i-1].h/2;
+     119 |         int pc = rooms[i-1].c + rooms[i-1].w/2;
+     120 |         int nr = rooms[i].r   + rooms[i].h/2;
+     121 |         int nc = rooms[i].c   + rooms[i].w/2;
+     122 |         carve_hcorridor(pr, pc, nc);
+     123 |         carve_vcorridor(nc, pr, nr);
+     124 |     }
+     125 |     /* place exit in last room */
+     126 |     Room *last = &rooms[room_count-1];
+     127 |     map[last->r + last->h/2][last->c + last->w/2] = T_EXIT;
+     128 | }
+     129 | 
+     130 | int rand_floor(int *rout, int *cout) {
+     131 |     for (int t=0;t<1000;t++){
+     132 |         int r=rand()%ROWS, c=rand()%COLS;
+     133 |         if (map[r][c]==T_FLOOR){*rout=r;*cout=c;return 1;}
+     134 |     }
+     135 |     return 0;
+     136 | }
+     137 | 
+     138 | void spawn_entities(void) {
+     139 |     mon_count  = 0;
+     140 |     gold_count = 0;
+>>>  141 |     int num_mon  = 4 + floor_num * 2;  if (num_mon  > MAX_MONSTERS) num_mon  = MAX_MONSTERS;
+     142 |     int num_gold = 3 + floor_num;      if (num_gold > MAX_GOLD)     num_gold = MAX_GOLD;
+     143 | 
+     144 |     for (int i=0;i<num_mon;i++) {
+     145 |         int r,c;
+     146 |         if (!rand_floor(&r,&c)) continue;
+     147 |         Entity *m = &monsters[mon_count++];
+     148 |         m->alive = 1;
+     149 |         m->r = r; m->c = c;
+     150 |         int roll = rand()%10;
+     151 |         if (roll < 5)       { m->type=MON_GOBLIN; m->max_hp=4+floor_num;  m->atk=2+floor_num/2; }
+     152 |         else if (roll < 8)  { m->type=MON_ORC;    m->max_hp=8+floor_num*2;m->atk=4+floor_num; }
+     153 |         else                { m->type=MON_DRAGON;  m->max_hp=14+floor_num*3;m->atk=7+floor_num*2;}
+     154 |         m->hp = m->max_hp;
+     155 |     }
+     156 |     for (int i=0;i<num_gold;i++) {
+     157 |         int r,c;
+     158 |         if (!rand_floor(&r,&c)) continue;
+     159 |         gold_piles[gold_count++] = (Entity){r,c,GOLD_COIN,1,1,0,1};
+     160 |     }
+     161 | }
+     162 | 
+     163 | void init_floor(void) {
+     164 |     gen_map();
+     165 |     /* player in first room center */
+     166 |     p_r = rooms[0].r + rooms[0].h/2;
+     167 |     p_c = rooms[0].c + rooms[0].w/2;
+     168 |     spawn_entities();
+     169 |     char buf[60];
+     170 |     snprintf(buf,sizeof(buf),"-- Entered floor %d --", floor_num);
+     171 |     log_msg(buf);
+     172 | }
+     173 | 
+     174 | /* ── math challenge ── */
+     175 | int math_challenge(int difficulty) {
+     176 |     int a = 2 + rand()%(4*difficulty);
+     177 |     int b = 1 + rand()%(3*difficulty);
+     178 |     int op = rand()%3;
+     179 |     int answer, correct;
+     180 |     char question[60];
+     181 |     if (op==0){ answer=a+b; snprintf(question,sizeof(question),"  %d + %d = ? ", a, b); }
+     182 |     else if(op==1){ answer=a*b; snprintf(question,sizeof(question),"  %d x %d = ? ", a, b); }
+     183 |     else { answer=a-b; snprintf(question,sizeof(question),"  %d - %d = ? ", a, b); }
+     184 | 
+     185 |     printf("\n  [MATH CHALLENGE] %s", question);
+     186 |     int guess;
+     187 |     if (scanf("%d",&guess)!=1) guess=-9999;
+     188 |     /* flush */
+     189 |     int ch; while((ch=getchar())!='\n'&&ch!=EOF);
+     190 |     correct = (guess == answer);
+     191 |     if (correct) printf("  CORRECT! Deal double damage!\n");
+     192 |     else printf("  Wrong! (answer: %d) — you deal half damage!\n", answer);
+     193 |     return correct;
+     194 | }
+     195 | 
+     196 | /* ── combat ── */
+     197 | void fight(Entity *m) {
+     198 |     printf("\n");
+     199 |     printf("  *** COMBAT: You vs %c (HP:%d/%d ATK:%d) ***\n",
+     200 |            m->type, m->hp, m->max_hp, m->atk);
+     201 | 
+     202 |     int diff = (m->type==MON_GOBLIN)?1:(m->type==MON_ORC)?2:3;
+     203 |     int correct = math_challenge(diff);
+     204 | 
+     205 |     int p_dmg = 3 + floor_num + (correct ? 3 : 0);
+     206 |     if (!correct) p_dmg = p_dmg / 2 + 1;
+     207 |     int m_dmg = m->atk - (correct ? 1 : 0);
+     208 |     if (m_dmg < 1) m_dmg = 1;
+     209 | 
+     210 |     m->hp -= p_dmg;
+     211 |     p_hp  -= m_dmg;
+     212 | 
+     213 |     char buf[80];
+     214 |     if (m->hp <= 0) {
+     215 |         m->alive = 0;
+     216 |         int loot = 2 + rand()%4;
+     217 |         p_gold += loot;
+     218 |         snprintf(buf,sizeof(buf),"Defeated %c! Got %d gold. You took %d dmg.", m->type, loot, m_dmg);
+     219 |     } else {
+     220 |         snprintf(buf,sizeof(buf),"Hit %c for %d dmg (HP:%d). Took %d dmg.", m->type, p_dmg, m->hp, m_dmg);
+     221 |     }
+     222 |     log_msg(buf);
+     223 |     printf("  %s\n", buf);
+     224 |     printf("  Press ENTER to continue...");
+     225 |     getchar();
+     226 | }
+     227 | 
+     228 | /* ── draw ── */
+     229 | void draw(void) {
+     230 |     system(CLEAR);
+     231 |     printf("\n  NUMBER DUNGEON  |  Floor %d  |  HP: %d/%d  |  Gold: %d\n",
+     232 |            floor_num, p_hp, p_max_hp, p_gold);
+     233 |     printf("  WASD=move | Walk into monsters to fight | Q=quit\n\n");
+     234 | 
+     235 |     /* build display */
+     236 |     char display[ROWS][COLS+1];
+     237 |     for (int r=0;r<ROWS;r++){memcpy(display[r],map[r],COLS);display[r][COLS]='\0';}
+     238 | 
+     239 |     for (int i=0;i<gold_count;i++)
+     240 |         if (gold_piles[i].alive)
+     241 |             display[gold_piles[i].r][gold_piles[i].c] = GOLD_COIN;
+     242 |     for (int i=0;i<mon_count;i++)
+     243 |         if (monsters[i].alive)
+     244 |             display[monsters[i].r][monsters[i].c] = monsters[i].type;
+     245 |     display[p_r][p_c] = '@';
+     246 | 
+     247 |     for (int r=0;r<ROWS;r++) printf("  %s\n", display[r]);
+     248 | 
+     249 |     printf("\n  Legend: @ you  g goblin  O orc  D dragon  $ gold  E exit  # wall\n\n");
+     250 |     printf("  -- Messages --\n");
+     251 |     int start = log_head - MAX_LOG;
+     252 |     if (start < 0) start = 0;
+     253 |     for (int i=start; i<log_head; i++)
+     254 |         printf("  > %s\n", log_lines[i%MAX_LOG]);
+     255 |     printf("\n");
+     256 | }
+     257 | 
+     258 | /* ── move ── */
+     259 | void try_move(int dr, int dc) {
+     260 |     int nr = p_r + dr, nc = p_c + dc;
+     261 |     if (nr<0||nr>=ROWS||nc<0||nc>=COLS) return;
+     262 |     if (map[nr][nc]==T_WALL) return;
+     263 | 
+     264 |     /* check monsters */
+     265 |     for (int i=0;i<mon_count;i++) {
+     266 |         if (monsters[i].alive && monsters[i].r==nr && monsters[i].c==nc) {
+     267 |             fight(&monsters[i]);
+     268 |             if (p_hp <= 0) { game_over = 1; }
+     269 |             return;
+     270 |         }
+     271 |     }
+     272 |     /* pick up gold */
+     273 |     for (int i=0;i<gold_count;i++) {
+     274 |         if (gold_piles[i].alive && gold_piles[i].r==nr && gold_piles[i].c==nc) {
+     275 |             int amt = 5 + rand()%10;
+     276 |             p_gold += amt;
+     277 |             gold_piles[i].alive = 0;
+     278 |             char buf[60];
+     279 |             snprintf(buf,sizeof(buf),"Picked up %d gold! Total: %d", amt, p_gold);
+     280 |             log_msg(buf);
+     281 |         }
+     282 |     }
+     283 |     /* move */
+     284 |     p_r = nr; p_c = nc;
+     285 | 
+     286 |     /* check exit */
+     287 |     if (map[nr][nc]==T_EXIT) {
+     288 |         floor_num++;
+     289 |         if (floor_num > 5) { won = 1; return; }
+     290 |         /* heal a bit between floors */
+     291 |         p_hp += 5; if (p_hp > p_max_hp) p_max_hp += 3, p_hp = p_max_hp;
+     292 |         init_floor();
+     293 |     }
+     294 | }
+     295 | 
+     296 | /* ── main ── */
+     297 | int main(void) {
+     298 |     srand((unsigned)time(NULL));
+     299 | 
+     300 |     printf("\n  ╔══════════════════════════════════╗\n");
+     301 |     printf("  ║      NUMBER DUNGEON v1.0         ║\n");
+     302 |     printf("  ║  A math-powered roguelike in C   ║\n");
+     303 |     printf("  ╚══════════════════════════════════╝\n\n");
+     304 |     printf("  Survive 5 floors of monster-filled dungeons!\n");
+     305 |     printf("  When you fight, solve a math problem fast.\n");
+     306 |     printf("  Correct = BONUS damage. Wrong = PENALTY!\n\n");
+     307 |     printf("  Press ENTER to begin...\n");
+     308 |     getchar();
+     309 | 
+     310 |     memset(log_lines, 0, sizeof(log_lines));
+     311 |     init_floor();
+     312 | 
+     313 |     while (!game_over && !won) {
+     314 |         draw();
+     315 |         char c = getchar();
+     316 |         /* flush rest of line */
+     317 |         if (c != '\n') { int ch; while((ch=getchar())!='\n'&&ch!=EOF); }
+     318 |         if (c=='q'||c=='Q') break;
+     319 |         if (c=='w'||c=='W') try_move(-1, 0);
+     320 |         if (c=='s'||c=='S') try_move(+1, 0);
+     321 |         if (c=='a'||c=='A') try_move( 0,-1);
+     322 |         if (c=='d'||c=='D') try_move( 0,+1);
+     323 |     }
+     324 | 
+     325 |     system(CLEAR);
+     326 |     if (won) {
+     327 |         printf("\n  *** YOU ESCAPED THE DUNGEON! ***\n");
+     328 |         printf("  Floors cleared: 5  |  Final gold: %d\n\n", p_gold);
+     329 |     } else if (game_over) {
+     330 |         printf("\n  *** YOU DIED on floor %d ***\n", floor_num);
+     331 |         printf("  Gold collected: %d\n\n", p_gold);
+     332 |     } else {
+     333 |         printf("\n  You fled the dungeon with %d gold.\n\n", p_gold);
+     334 |     }
+     335 |     return 0;
+     336 | }
+--- End Source ---
 
-[PASS] tests\doubly_linked_list.sa
-
-[PASS] tests\dungeon.sa
-
-[PASS] tests\dynamic_array.sa
-
-[PASS] tests\eulerian_path.sa
+========================================================================
 
 [FAIL] tests\file operations.sa
 ------------------------------------------------------------------------
@@ -817,58 +1338,6 @@ Error  : RuntimeError: Execution step limit exceeded (possible infinite loop)
 
 ========================================================================
 
-[PASS] tests\file reader.sa
-
-[FAIL] tests\form input.sa
-------------------------------------------------------------------------
-Error  : ParseError: Expected variable name (got 'input')
-Line   : 3   Col : 9
-
---- Source Code (tests\form input.sa) ---
-       1 | // Simple Form Input Handler
-       2 | function handleFormInput() {
->>>    3 |   const input = document.getElementById('textInput');
-       4 |   const display = document.getElementById('displayText');
-       5 |   
-       6 |   input.addEventListener('input', function() {
-       7 |     display.textContent = this.value;
-       8 |   });
-       9 | }
-      10 | 
-      11 | // Form validation
-      12 | function validateForm() {
-      13 |   const form = document.querySelector('#myForm');
-      14 |   const email = document.querySelector('#email');
-      15 |   
-      16 |   form.addEventListener('submit', function(e) {
-      17 |     e.preventDefault();
-      18 |     
-      19 |     if (email.value.includes('@')) {
-      20 |       console.log('Form submitted successfully!');
-      21 |       this.reset();
-      22 |     } else {
-      23 |       alert('Please enter a valid email');
-      24 |     }
-      25 |   });
-      26 | }
-      27 | 
-      28 | // Initialize
-      29 | handleFormInput();
-      30 | validateForm();
-      31 | 
-      32 | console.log('Form handlers ready!');
---- End Source ---
-
-========================================================================
-
-[PASS] tests\free_list.sa
-
-[PASS] tests\graph_algorithms.sa
-
-[PASS] tests\graph_isomorphism.sa
-
-[PASS] tests\guess_number.sa
-
 [FAIL] tests\hangman.sa
 ------------------------------------------------------------------------
 Error  : ParseError: Expected ']' (got '
@@ -1257,18 +1726,10 @@ Line   : 34   Col : 15
 
 ========================================================================
 
-[PASS] tests\hash_function.sa
-
-[PASS] tests\hash_map.sa
-
-[PASS] tests\hash_set.sa
-
-[PASS] tests\hash_table.sa
-
 [FAIL] tests\hash_table_iterator.sa
 ------------------------------------------------------------------------
 Error  : ParseError: Unexpected token: '\n'
-Line   : 347   Col : 52
+Line   : 347   Col : 51
 
 --- Source Code (tests\hash_table_iterator.sa) ---
        1 | // Hash Table with Iterator Implementation in C++
@@ -1643,11 +2104,383 @@ Line   : 347   Col : 52
 
 ========================================================================
 
-[PASS] tests\heap.sa
+[FAIL] tests\hash_table_iterator_library.sa
+------------------------------------------------------------------------
+Error  : ParseError: Unexpected token: '\n'
+Line   : 347   Col : 51
 
-[PASS] tests\huffman_tree.sa
+--- Source Code (tests\hash_table_iterator_library.sa) ---
+       1 | // Hash Table with Iterator Implementation in C++
+       2 | #include <iostream>
+       3 | #include <vector>
+       4 | #include <list>
+       5 | #include <iterator>
+       6 | #include <string>
+       7 | using namespace std;
+       8 | 
+       9 | template<typename K, typename V>
+      10 | class IterableHashTable {
+      11 | private:
+      12 |     struct Entry {
+      13 |         K key;
+      14 |         V value;
+      15 |         
+      16 |         Entry(const K& k, const V& v) : key(k), value(v) {}
+      17 |     };
+      18 | 
+      19 |     vector<list<Entry>> table;
+      20 |     size_t capacity;
+      21 |     size_t size;
+      22 | 
+      23 |     size_t hashFunction(const K& key) const {
+      24 |         hash<K> hasher;
+      25 |         return hasher(key) % capacity;
+      26 |     }
+      27 | 
+      28 |     void rehash() {
+      29 |         vector<list<Entry>> oldTable = table;
+      30 |         size_t oldCapacity = capacity;
+      31 |         
+      32 |         capacity *= 2;
+      33 |         table.clear();
+      34 |         table.resize(capacity);
+      35 |         size = 0;
+      36 |         
+      37 |         for (size_t i = 0; i < oldCapacity; ++i) {
+      38 |             for (const Entry& entry : oldTable[i]) {
+      39 |                 insert(entry.key, entry.value);
+      40 |             }
+      41 |         }
+      42 |     }
+      43 | 
+      44 | public:
+      45 |     IterableHashTable(size_t initialCapacity = 16) : capacity(initialCapacity), size(0) {
+      46 |         table.resize(capacity);
+      47 |     }
+      48 | 
+      49 |     void insert(const K& key, const V& value) {
+      50 |         if (static_cast<double>(size) / capacity > 0.75) {
+      51 |             rehash();
+      52 |         }
+      53 |         
+      54 |         size_t index = hashFunction(key);
+      55 |         
+      56 |         for (Entry& entry : table[index]) {
+      57 |             if (entry.key == key) {
+      58 |                 entry.value = value;
+      59 |                 return;
+      60 |             }
+      61 |         }
+      62 |         
+      63 |         table[index].emplace_back(key, value);
+      64 |         size++;
+      65 |     }
+      66 | 
+      67 |     bool remove(const K& key) {
+      68 |         size_t index = hashFunction(key);
+      69 |         
+      70 |         for (auto it = table[index].begin(); it != table[index].end(); ++it) {
+      71 |             if (it->key == key) {
+      72 |                 table[index].erase(it);
+      73 |                 size--;
+      74 |                 return true;
+      75 |             }
+      76 |         }
+      77 |         
+      78 |         return false;
+      79 |     }
+      80 | 
+      81 |     V* find(const K& key) {
+      82 |         size_t index = hashFunction(key);
+      83 |         
+      84 |         for (Entry& entry : table[index]) {
+      85 |             if (entry.key == key) {
+      86 |                 return &entry.value;
+      87 |             }
+      88 |         }
+      89 |         
+      90 |         return nullptr;
+      91 |     }
+      92 | 
+      93 |     bool contains(const K& key) const {
+      94 |         size_t index = hashFunction(key);
+      95 |         
+      96 |         for (const Entry& entry : table[index]) {
+      97 |             if (entry.key == key) {
+      98 |                 return true;
+      99 |             }
+     100 |         }
+     101 |         
+     102 |         return false;
+     103 |     }
+     104 | 
+     105 |     size_t getSize() const { return size; }
+     106 |     size_t getCapacity() const { return capacity; }
+     107 | 
+     108 |     // Iterator implementation
+     109 |     class Iterator {
+     110 |     private:
+     111 |         vector<list<Entry>>* table;
+     112 |         size_t bucketIndex;
+     113 |         typename list<Entry>::iterator listIt;
+     114 |         bool atEnd;
+     115 | 
+     116 |         void advanceToNextValid() {
+     117 |             while (bucketIndex < table->size()) {
+     118 |                 if (listIt != (*table)[bucketIndex].end()) {
+     119 |                     break;
+     120 |                 }
+     121 |                 bucketIndex++;
+     122 |                 if (bucketIndex < table->size()) {
+     123 |                     listIt = (*table)[bucketIndex].begin();
+     124 |                 }
+     125 |             }
+     126 |             
+     127 |             if (bucketIndex >= table->size()) {
+     128 |                 atEnd = true;
+     129 |             }
+     130 |         }
+     131 | 
+     132 |     public:
+     133 |         Iterator(vector<list<Entry>>* t, bool end = false) 
+     134 |             : table(t), bucketIndex(0), atEnd(end) {
+     135 |             if (!end && !table->empty()) {
+     136 |                 listIt = (*table)[0].begin();
+     137 |                 advanceToNextValid();
+     138 |             } else {
+     139 |                 atEnd = true;
+     140 |             }
+     141 |         }
+     142 | 
+     143 |         Iterator& operator++() {
+     144 |             if (atEnd) return *this;
+     145 |             
+     146 |             ++listIt;
+     147 |             advanceToNextValid();
+     148 |             return *this;
+     149 |         }
+     150 | 
+     151 |         Iterator operator++(int) {
+     152 |             Iterator temp = *this;
+     153 |             ++(*this);
+     154 |             return temp;
+     155 |         }
+     156 | 
+     157 |         Entry& operator*() {
+     158 |             return *listIt;
+     159 |         }
+     160 | 
+     161 |         Entry* operator->() {
+     162 |             return &(*listIt);
+     163 |         }
+     164 | 
+     165 |         bool operator==(const Iterator& other) const {
+     166 |             return atEnd == other.atEnd && 
+     167 |                    (atEnd || (bucketIndex == other.bucketIndex && listIt == other.listIt));
+     168 |         }
+     169 | 
+     170 |         bool operator!=(const Iterator& other) const {
+     171 |             return !(*this == other);
+     172 |         }
+     173 |     };
+     174 | 
+     175 |     Iterator begin() {
+     176 |         return Iterator(&table);
+     177 |     }
+     178 | 
+     179 |     Iterator end() {
+     180 |         return Iterator(&table, true);
+     181 |     }
+     182 | 
+     183 |     // Const iterator
+     184 |     class ConstIterator {
+     185 |     private:
+     186 |         const vector<list<Entry>>* table;
+     187 |         size_t bucketIndex;
+     188 |         typename list<Entry>::const_iterator listIt;
+     189 |         bool atEnd;
+     190 | 
+     191 |         void advanceToNextValid() {
+     192 |             while (bucketIndex < table->size()) {
+     193 |                 if (listIt != (*table)[bucketIndex].end()) {
+     194 |                     break;
+     195 |                 }
+     196 |                 bucketIndex++;
+     197 |                 if (bucketIndex < table->size()) {
+     198 |                     listIt = (*table)[bucketIndex].begin();
+     199 |                 }
+     200 |             }
+     201 |             
+     202 |             if (bucketIndex >= table->size()) {
+     203 |                 atEnd = true;
+     204 |             }
+     205 |         }
+     206 | 
+     207 |     public:
+     208 |         ConstIterator(const vector<list<Entry>>* t, bool end = false) 
+     209 |             : table(t), bucketIndex(0), atEnd(end) {
+     210 |             if (!end && !table->empty()) {
+     211 |                 listIt = (*table)[0].begin();
+     212 |                 advanceToNextValid();
+     213 |             } else {
+     214 |                 atEnd = true;
+     215 |             }
+     216 |         }
+     217 | 
+     218 |         ConstIterator& operator++() {
+     219 |             if (atEnd) return *this;
+     220 |             
+     221 |             ++listIt;
+     222 |             advanceToNextValid();
+     223 |             return *this;
+     224 |         }
+     225 | 
+     226 |         ConstIterator operator++(int) {
+     227 |             ConstIterator temp = *this;
+     228 |             ++(*this);
+     229 |             return temp;
+     230 |         }
+     231 | 
+     232 |         const Entry& operator*() const {
+     233 |             return *listIt;
+     234 |         }
+     235 | 
+     236 |         const Entry* operator->() const {
+     237 |             return &(*listIt);
+     238 |         }
+     239 | 
+     240 |         bool operator==(const ConstIterator& other) const {
+     241 |             return atEnd == other.atEnd && 
+     242 |                    (atEnd || (bucketIndex == other.bucketIndex && listIt == other.listIt));
+     243 |         }
+     244 | 
+     245 |         bool operator!=(const ConstIterator& other) const {
+     246 |             return !(*this == other);
+     247 |         }
+     248 |     };
+     249 | 
+     250 |     ConstIterator begin() const {
+     251 |         return ConstIterator(&table);
+     252 |     }
+     253 | 
+     254 |     ConstIterator end() const {
+     255 |         return ConstIterator(&table, true);
+     256 |     }
+     257 | 
+     258 |     ConstIterator cbegin() const {
+     259 |         return begin();
+     260 |     }
+     261 | 
+     262 |     ConstIterator cend() const {
+     263 |         return end();
+     264 |     }
+     265 | 
+     266 |     void display() const {
+     267 |         cout << "Iterable Hash Table:" << endl;
+     268 |         cout << "Size: " << size << ", Capacity: " << capacity << endl;
+     269 |         cout << "Contents:" << endl;
+     270 |         
+     271 |         for (const auto& entry : *this) {
+     272 |             cout << "[" << entry.key << ": " << entry.value << "] ";
+     273 |         }
+     274 |         cout << endl;
+     275 |     }
+     276 | 
+     277 |     vector<K> getKeys() const {
+     278 |         vector<K> keys;
+     279 |         for (const auto& entry : *this) {
+     280 |             keys.push_back(entry.key);
+     281 |         }
+     282 |         return keys;
+     283 |     }
+     284 | 
+     285 |     vector<V> getValues() const {
+     286 |         vector<V> values;
+     287 |         for (const auto& entry : *this) {
+     288 |             values.push_back(entry.value);
+     289 |         }
+     290 |         return values;
+     291 |     }
+     292 | };
+     293 | 
+     294 | // Range-based for loop support example
+     295 | template<typename K, typename V>
+     296 | void printHashTable(const IterableHashTable<K, V>& ht) {
+     297 |     cout << "Printing using range-based for loop:" << endl;
+     298 |     for (const auto& entry : ht) {
+     299 |         cout << entry.key << " -> " << entry.value << endl;
+     300 |     }
+     301 | }
+     302 | 
+     303 | // STL algorithm compatibility example
+     304 | template<typename K, typename V>
+     305 | V findMaxValue(const IterableHashTable<K, V>& ht) {
+     306 |     if (ht.getSize() == 0) {
+     307 |         return V{};
+     308 |     }
+     309 |     
+     310 |     auto maxIt = max_element(ht.begin(), ht.end(), 
+     311 |         [](const auto& a, const auto& b) {
+     312 |             return a.value < b.value;
+     313 |         });
+     314 |     
+     315 |     return maxIt->value;
+     316 | }
+     317 | 
+     318 | int main() {
+     319 |     IterableHashTable<string, int> iht;
+     320 |     
+     321 |     iht.insert("apple", 5);
+     322 |     iht.insert("banana", 3);
+     323 |     iht.insert("orange", 7);
+     324 |     iht.insert("grape", 2);
+     325 |     iht.insert("mango", 4);
+     326 |     
+     327 |     iht.display();
+     328 |     cout << endl;
+     329 |     
+     330 |     cout << "=== Iterator Demo ===" << endl;
+     331 |     cout << "Using iterator:" << endl;
+     332 |     for (auto it = iht.begin(); it != iht.end(); ++it) {
+     333 |         cout << it->key << " -> " << it->value << endl;
+     334 |     }
+     335 |     
+     336 |     cout << "\nUsing const iterator:" << endl;
+     337 |     for (auto it = iht.cbegin(); it != iht.cend(); ++it) {
+     338 |         cout << it->key << " -> " << it->value << endl;
+     339 |     }
+     340 |     
+     341 |     cout << "\n=== Range-based for loop ===" << endl;
+     342 |     printHashTable(iht);
+     343 |     
+     344 |     cout << "\n=== STL Algorithm Compatibility ===" << endl;
+     345 |     cout << "Max value: " << findMaxValue(iht) << endl;
+     346 |     
+>>>  347 |     cout << "Count of entries with value > 3: " << 
+     348 |         count_if(iht.begin(), iht.end(), 
+     349 |                 [](const auto& entry) { return entry.value > 3; }) << endl;
+     350 |     
+     351 |     cout << "All entries (using for_each):" << endl;
+     352 |     for_each(iht.begin(), iht.end(), 
+     353 |             [](const auto& entry) { 
+     354 |                 cout << entry.key << ":" << entry.value << " "; 
+     355 |             });
+     356 |     cout << endl;
+     357 |     
+     358 |     cout << "\n=== Find and Modify ===" << endl;
+     359 |     auto it = find_if(iht.begin(), iht.end(), 
+     360 |                     [](const auto& entry) { return entry.key == "banana"; });
+     361 |     
+     362 |     if (it != iht.end()) {
+     363 |         cout << "Found banana with value: " << it->value << endl;
+     364 |         // Note: Can't modify through const_iterator, but could through regular iterator
+     365 |     }
+     366 |     
+     367 |     return 0;
+     368 | }
+--- End Source ---
 
-[PASS] tests\hyperloglog.sa
+========================================================================
 
 [FAIL] tests\input sanitizer.sa
 ------------------------------------------------------------------------
@@ -1726,8 +2559,6 @@ Line   : 6   Col : 5
 --- End Source ---
 
 ========================================================================
-
-[PASS] tests\interval_tree.sa
 
 [FAIL] tests\k_d_tree.sa
 ------------------------------------------------------------------------
@@ -1883,15 +2714,211 @@ Line   : 131   Col : 22
 
 ========================================================================
 
-[PASS] tests\kruskal.sa
+[FAIL] tests\linear search.sa
+------------------------------------------------------------------------
+Error  : ParseError: Expected '}' (got '')
+Line   : 197   Col : 1
 
-[PASS] tests\linear search.sa
+--- Source Code (tests\linear search.sa) ---
+       1 | # linear_search.sa - Linear Search Algorithm Implementation
+       2 | # C-style linear search implementation in Quantum Language
+       3 | 
+       4 | function linear_search(arr, target) {
+       5 |     let n = len(arr);
+       6 |     
+       7 |     for (let i = 0; i < n; i++) {
+       8 |         if (arr[i] == target) {
+       9 |             return i;  # Return index of found element
+      10 |         }
+      11 |     }
+      12 |     
+      13 |     return -1;  # Return -1 if not found
+      14 | }
+      15 | 
+      16 | # Test the linear search implementation
+      17 | let test_array = [2, 3, 4, 10, 40];
+      18 | print("Test array:", test_array);
+      19 | 
+      20 | let target1 = 10;
+      21 | let result1 = linear_search(test_array, target1);
+      22 | print("Searching for", target1, "- Index:", result1);
+      23 | 
+      24 | let target2 = 5;
+      25 | let result2 = linear_search(test_array, target2);
+      26 | print("Searching for", target2, "- Index:", result2);
+      27 | 
+      28 | # Search with different data types
+      29 | let string_array = ["apple", "banana", "cherry", "date"];
+      30 | print("String array:", string_array);
+      31 | 
+      32 | let string_target = "cherry";
+      33 | let string_result = linear_search(string_array, string_target);
+      34 | print("Searching for", string_target, "- Index:", string_result);
+      35 | 
+      36 | # Search in array with duplicates
+      37 | let duplicates_array = [1, 2, 3, 2, 4, 2, 5];
+      38 | print("Array with duplicates:", duplicates_array);
+      39 | 
+      40 | let duplicate_target = 2;
+      41 | let duplicate_result = linear_search(duplicates_array, duplicate_target);
+      42 | print("First occurrence of", duplicate_target, "- Index:", duplicate_result);
+      43 | 
+      44 | # Enhanced linear search that returns all occurrences
+      45 | function linear_search_all(arr, target) {
+      46 |     let n = len(arr);
+      47 |     let occurrences = [];
+      48 |     
+      49 |     for (let i = 0; i < n; i++) {
+      50 |         if (arr[i] == target) {
+      51 |             occurrences.push(i);
+      52 |         }
+      53 |     }
+      54 |     
+      55 |     return occurrences;
+      56 | }
+      57 | 
+      58 | let all_occurrences = linear_search_all(duplicates_array, duplicate_target);
+      59 | print("All occurrences of", duplicate_target, ":", all_occurrences);
+      60 | 
+      61 | # Linear search with custom comparison function
+      62 | function linear_search_custom(arr, target, compare_func) {
+      63 |     let n = len(arr);
+      64 |     
+      65 |     for (let i = 0; i < n; i++) {
+      66 |         if (compare_func(arr[i], target)) {
+      67 |             return i;
+      68 |         }
+      69 |     }
+      70 |     
+      71 |     return -1;
+      72 | }
+      73 | 
+      74 | # Search for numbers greater than a threshold
+      75 | let numbers = [10, 25, 5, 30, 15, 40, 20];
+      76 | print("Numbers array:", numbers);
+      77 | 
+      78 | let threshold = 20;
+      79 | let greater_than_result = linear_search_custom(numbers, threshold, (x, t) => x > t);
+      80 | print("First number > 20 - Index:", greater_than_result, "Value:", numbers[greater_than_result]);
+      81 | 
+      82 | # Search for strings containing a substring
+      83 | let words = ["hello", "world", "programming", "quantum", "computer"];
+      84 | print("Words array:", words);
+      85 | 
+      86 | let substring = "pro";
+      87 | let contains_result = linear_search_custom(words, substring, (word, sub) => word.contains(sub));
+      88 | print("First word containing", substring, "- Index:", contains_result, "Value:", words[contains_result]);
+      89 | 
+      90 | # Search in array of objects
+      91 | let students = [
+      92 |     {"name": "Alice", "age": 20, "grade": "A"},
+      93 |     {"name": "Bob", "age": 22, "grade": "B"},
+      94 |     {"name": "Charlie", "age": 21, "grade": "A"},
+      95 |     {"name": "Diana", "age": 19, "grade": "C"}
+      96 | ];
+      97 | 
+      98 | print("Students array:");
+      99 | for (let student in students) {
+     100 |     print("  ", student.name, "- Age:", student.age, "- Grade:", student.grade);
+     101 | }
+     102 | 
+     103 | # Search for student by name
+     104 | function find_student_by_name(students, name) {
+     105 |     for (let i = 0; i < len(students); i++) {
+     106 |         if (students[i].name == name) {
+     107 |             return i;
+     108 |         }
+     109 |     }
+     110 |     return -1;
+     111 | }
+     112 | 
+     113 | let student_name = "Charlie";
+     114 | let student_index = find_student_by_name(students, student_name);
+     115 | if (student_index != -1) {
+     116 |     print("Found", student_name, "at index", student_index);
+     117 |     print("Details:", students[student_index]);
+     118 | } else {
+     119 |     print(student_name, "not found");
+     120 | }
+     121 | 
+     122 | # Search for students with specific grade
+     123 | function find_students_by_grade(students, grade) {
+     124 |     let result = [];
+     125 |     for (let i = 0; i < len(students); i++) {
+     126 |         if (students[i].grade == grade) {
+     127 |             result.push(students[i]);
+     128 |         }
+     129 |     }
+     130 |     return result;
+     131 | }
+     132 | 
+     133 | let grade_a_students = find_students_by_grade(students, "A");
+     134 | print("Students with grade A:");
+     135 | for (let student in grade_a_students) {
+     136 |     print("  ", student.name);
+     137 | }
+     138 | 
+     139 | # Performance comparison with different array sizes
+     140 | function performance_test() {
+     141 |     print("\nPerformance Test:");
+     142 |     
+     143 |     for (let size = 100; size <= 1000; size += 100) {
+     144 |         # Create array with random numbers
+     145 |         let test_arr = [];
+     146 |         for (let i = 0; i < size; i++) {
+     147 |             test_arr.push(randint(0, 1000));
+     148 |         }
+     149 |         
+     150 |         # Search for a random target
+     151 |         let target = randint(0, 1000);
+     152 |         
+     153 |         let start_time = time();
+     154 |         let result = linear_search(test_arr, target);
+     155 |         let end_time = time();
+     156 |         
+     157 |         print("Array size:", size, "Search time:", (end_time - start_time), "seconds");
+     158 |     }
+     159 | }
+     160 | 
+     161 | performance_test();
+     162 | 
+     163 | # Count comparisons during search
+     164 | function linear_search_with_stats(arr, target) {
+     165 |     let n = len(arr);
+     166 |     let comparisons = 0;
+     167 |     
+     168 |     for (let i = 0; i < n; i++) {
+     169 |         comparisons++;
+     170 |         if (arr[i] == target) {
+     171 |             return {"index": i, "comparisons": comparisons, "found": true};
+     172 |         }
+     173 |     }
+     174 |     
+     175 |     return {"index": -1, "comparisons": comparisons, "found": false};
+     176 | }
+     177 | 
+     178 | let stats = linear_search_with_stats([2, 3, 4, 10, 40], 10);
+     179 | print("Search for 10 - Found:", stats.found, "Index:", stats.index, "Comparisons:", stats.comparisons);
+     180 | 
+     181 | let stats_not_found = linear_search_with_stats([2, 3, 4, 10, 40], 5);
+     182 | print("Search for 5 - Found:", stats_not_found.found, "Comparisons:", stats_not_found.comparisons);
+     183 | 
+     184 | # Best case, worst case, and average case analysis
+     185 | print("\nCase Analysis:");
+     186 | let best_case_array = [1, 2, 3, 4, 5];
+     187 | let worst_case_array = [1, 2, 3, 4, 5];
+     188 | let avg_case_array = [3, 1, 4, 2, 5];
+     189 | 
+     190 | let best_case = linear_search_with_stats(best_case_array, 1);
+     191 | let worst_case = linear_search_with_stats(worst_case_array, 5);
+     192 | let avg_case = linear_search_with_stats(avg_case_array, 2);
+     193 | 
+     194 | print("Best case (first element):", best_case.comparisons, "comparisons");
+     195 | print("Worst case (last element):", worst_case.comparisons, "comparisons");
+     196 | print("Average case (middle element):", avg_case.comparisons, "comparisons");
+--- End Source ---
 
-[PASS] tests\linear_probing.sa
-
-[PASS] tests\link_cut_tree.sa
-
-[PASS] tests\linked_list.sa
+========================================================================
 
 [FAIL] tests\merge sort.sa
 ------------------------------------------------------------------------
@@ -2004,12 +3031,6 @@ Line   : 45
 --- End Source ---
 
 ========================================================================
-
-[PASS] tests\minesweeper.sa
-
-[PASS] tests\minimum_cut.sa
-
-[PASS] tests\order_statistic_tree.sa
 
 [FAIL] tests\password_generator.sa
 ------------------------------------------------------------------------
@@ -2148,14 +3169,6 @@ Line   : 5   Col : 8
 --- End Source ---
 
 ========================================================================
-
-[PASS] tests\perfect_hashing.sa
-
-[PASS] tests\persistent_hash.sa
-
-[PASS] tests\prim.sa
-
-[PASS] tests\quadratic_probing.sa
 
 [FAIL] tests\red_black_tree.sa
 ------------------------------------------------------------------------
@@ -2339,14 +3352,10 @@ Line   : 5   Col : 26
 
 ========================================================================
 
-[PASS] tests\robin_hood_hashing.sa
-
-[PASS] tests\rope.sa
-
 [FAIL] tests\rope_string.sa
 ------------------------------------------------------------------------
 Error  : ParseError: Unexpected token: '\n'
-Line   : 62   Col : 90
+Line   : 62   Col : 89
 
 --- Source Code (tests\rope_string.sa) ---
        1 | // Rope String Implementation in C++
@@ -2508,123 +3517,6 @@ Line   : 62   Col : 90
 --- End Source ---
 
 ========================================================================
-
-[FAIL] tests\segment_tree.sa
-------------------------------------------------------------------------
-Error  : ParseError: Expected ')' (got '<')
-Line   : 54   Col : 29
-
---- Source Code (tests\segment_tree.sa) ---
-       1 | // Segment Tree Implementation in C++
-       2 | #include <iostream>
-       3 | #include <vector>
-       4 | #include <algorithm>
-       5 | using namespace std;
-       6 | 
-       7 | class SegmentTree {
-       8 | private:
-       9 |     vector<int> tree;
-      10 |     vector<int> arr;
-      11 |     int n;
-      12 | 
-      13 |     void build(int start, int end, int node) {
-      14 |         if (start == end) {
-      15 |             tree[node] = arr[start];
-      16 |         } else {
-      17 |             int mid = (start + end) / 2;
-      18 |             build(start, mid, 2 * node + 1);
-      19 |             build(mid + 1, end, 2 * node + 2);
-      20 |             tree[node] = min(tree[2 * node + 1], tree[2 * node + 2]);
-      21 |         }
-      22 |     }
-      23 | 
-      24 |     int query(int start, int end, int l, int r, int node) {
-      25 |         if (r < start || end < l) {
-      26 |             return INT_MAX;
-      27 |         }
-      28 |         
-      29 |         if (l <= start && end <= r) {
-      30 |             return tree[node];
-      31 |         }
-      32 |         
-      33 |         int mid = (start + end) / 2;
-      34 |         return min(query(start, mid, l, r, 2 * node + 1),
-      35 |                    query(mid + 1, end, l, r, 2 * node + 2));
-      36 |     }
-      37 | 
-      38 |     void update(int start, int end, int idx, int val, int node) {
-      39 |         if (start == end) {
-      40 |             arr[idx] = val;
-      41 |             tree[node] = val;
-      42 |         } else {
-      43 |             int mid = (start + end) / 2;
-      44 |             if (idx <= mid) {
-      45 |                 update(start, mid, idx, val, 2 * node + 1);
-      46 |             } else {
-      47 |                 update(mid + 1, end, idx, val, 2 * node + 2);
-      48 |             }
-      49 |             tree[node] = min(tree[2 * node + 1], tree[2 * node + 2]);
-      50 |         }
-      51 |     }
-      52 | 
-      53 | public:
->>>   54 |     SegmentTree(const vector<int>& input) {
-      55 |         arr = input;
-      56 |         n = arr.size();
-      57 |         tree.resize(4 * n);
-      58 |         build(0, n - 1, 0);
-      59 |     }
-      60 | 
-      61 |     int query(int l, int r) {
-      62 |         return query(0, n - 1, l, r, 0);
-      63 |     }
-      64 | 
-      65 |     void update(int idx, int val) {
-      66 |         update(0, n - 1, idx, val, 0);
-      67 |     }
-      68 | 
-      69 |     void display() {
-      70 |         cout << "Segment Tree: ";
-      71 |         for (int i = 0; i < tree.size(); i++) {
-      72 |             if (tree[i] != INT_MAX) {
-      73 |                 cout << tree[i] << " ";
-      74 |             }
-      75 |         }
-      76 |         cout << endl;
-      77 |     }
-      78 | };
-      79 | 
-      80 | int main() {
-      81 |     vector<int> arr = {1, 3, 2, 7, 9, 11};
-      82 |     SegmentTree st(arr);
-      83 |     
-      84 |     st.display();
-      85 |     
-      86 |     cout << "Minimum in range [1, 4]: " << st.query(1, 4) << endl;
-      87 |     cout << "Minimum in range [0, 5]: " << st.query(0, 5) << endl;
-      88 |     cout << "Minimum in range [2, 3]: " << st.query(2, 3) << endl;
-      89 |     
-      90 |     st.update(2, 0);
-      91 |     cout << "After updating index 2 to 0:" << endl;
-      92 |     cout << "Minimum in range [1, 4]: " << st.query(1, 4) << endl;
-      93 |     
-      94 |     return 0;
-      95 | }
---- End Source ---
-
-========================================================================
-
-[PASS] tests\self_adjusting_list.sa
-
-[PASS] tests\skip_list.sa
-
-[PASS] tests\splay_tree.sa
-
-[PASS] tests\string repeating function.sa
-
-[PASS] tests\strongly_connected.sa
-
-[PASS] tests\suffix_tree.sa
 
 [FAIL] tests\text_analyzer.sa
 ------------------------------------------------------------------------
@@ -2799,18 +3691,6 @@ Line   : 76   Col : 12
 
 ========================================================================
 
-[PASS] tests\topological_sort.sa
-
-[PASS] tests\transitive_closure.sa
-
-[PASS] tests\treap.sa
-
-[PASS] tests\trie.sa
-
-[PASS] tests\universal_hashing.sa
-
-[PASS] tests\unrolled_linked_list.sa
-
 [FAIL] tests\url helper.sa
 ------------------------------------------------------------------------
 Error  : ParseError: Expected variable name (got '[')
@@ -2879,10 +3759,6 @@ Line   : 8   Col : 11
 
 ========================================================================
 
-[PASS] tests\vector.sa
-
-[PASS] tests\xor_linked_list.sa
-
 ========================================================================
-Result: FAILED 15/79 files
-Passed : 64   Failed : 15   Total : 79
+Result: FAILED 21/21 files
+Passed : 0   Failed : 21   Total : 21
