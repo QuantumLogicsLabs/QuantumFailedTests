@@ -1,8 +1,12 @@
 Quantum Language — Test Results (in progress)
-Generated : 2026-10-17 12:55:10
+Generated : 2026-10-20 14:28:13
 Directory : C:\QuantumLogicsLabs\QuantumLanguage\compiler\tests
-Total     : 14   (running...)
+Total     : 17   (running...)
 ========================================================================
+
+[PASS] tests\04_functions.py
+
+[PASS] tests\date helper.sa
 
 [FAIL] tests\ruby\01_json_codec.rb
 ------------------------------------------------------------------------
@@ -6540,6 +6544,8 @@ Line   : 112   Col : 12
 
 ========================================================================
 
+[PASS] tests\url helper.sa
+
 ========================================================================
-Result: FAILED 14/14 files
-Passed : 0   Failed : 14   Total : 14
+Result: FAILED 14/17 files
+Passed : 3   Failed : 14   Total : 17
